@@ -3,28 +3,26 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>ImageTools Pro — Free Online Image Editor | Convert, Compress & Resize Images</title>
-<meta name="description" content="Free online image tools: Convert PNG to JPG, compress images, resize photos. No sign-up required. 100% free, private and secure."/>
-<meta name="keywords" content="image converter, compress image, resize image, png to jpg, image editor online, free image tools, bulk image resize, image compressor, resize photos online"/>
+<title>ImageTools Pro — Free Online Image Editor | Convert, Compress, Resize, Crop, Rotate, Upscale & Edit Images</title>
+<meta name="description" content="Free online image tools: Convert to JPG, convert from JPG, compress, resize, crop, rotate, upscale images, photo editor, HTML to image. No sign-up. 100% free."/>
+<meta name="keywords" content="convert to jpg, convert from jpg, png to jpg, jpg to png, image converter, compress image, resize image, crop image, rotate image, upscale image, photo editor, html to image, image editor online, free image tools, bulk image processing"/>
 <meta name="robots" content="index,follow,max-image-preview:large"/>
 <meta name="author" content="ImageTools Pro"/>
 <meta property="og:title" content="ImageTools Pro — Free Online Image Editor"/>
-<meta property="og:description" content="3 powerful free image tools. Convert, compress and resize images online. No sign-up required."/>
+<meta property="og:description" content="10 powerful free image tools. Convert, compress, resize, crop, rotate, upscale images and more. No sign-up required."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://imagetools.app"/>
 <meta property="og:site_name" content="ImageTools Pro"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="ImageTools Pro — Free Online Image Editor"/>
-<meta name="twitter:description" content="Convert, compress and resize images online for free."/>
+<meta name="twitter:description" content="10 powerful free online image tools. No sign-up required."/>
 <meta name="theme-color" content="#7c3aed"/>
 <link rel="canonical" href="https://imagetools.app"/>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%237c3aed'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Cpath d='M8 22l5-7 4 5 3-4 4 6H8z' fill='white' opacity='0.9'/%3E%3Ccircle cx='20' cy='12' r='3' fill='white' opacity='0.9'/%3E%3C/svg%3E"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}
-</script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',system-ui,sans-serif;background:#f8fafc;min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -53,6 +51,9 @@ details summary{cursor:pointer;list-style:none}
 details summary::-webkit-details-marker{display:none}
 details[open] summary .faq-arrow{transform:rotate(180deg)}
 @media(max-width:768px){.hide-mobile{display:none!important}}
+.crop-overlay{position:absolute;border:2px dashed #7c3aed;background:rgba(124,58,237,0.1);cursor:move}
+.crop-handle{position:absolute;width:12px;height:12px;background:#7c3aed;border:2px solid white;border-radius:2px}
+canvas.editor-canvas{max-width:100%;border-radius:12px;border:1px solid #e2e8f0}
 </style>
 </head>
 <body>
@@ -64,29 +65,26 @@ details[open] summary .faq-arrow{transform:rotate(180deg)}
     <span>🔒 Private & Secure</span>
     <span>⚡ Fast Processing</span>
     <span class="hide-mobile">📱 Works Everywhere</span>
+    <span class="hide-mobile">🛠️ 10 Tools</span>
   </span>
 </div>
 
 <!-- ====== HEADER ====== -->
 <header class="sticky top-0 z-50 glass border-b border-gray-200 shadow-sm" id="header">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-    <!-- Logo -->
-    <div class="flex items-center gap-2 cursor-pointer" onclick="navigate('home')">
+    <a href="/" class="flex items-center gap-2 cursor-pointer no-underline" onclick="navigateTo('/');return false">
       <div class="w-9 h-9 rounded-xl gradient-bg flex items-center justify-center">
         <svg width="20" height="20" fill="none" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
       <span class="text-xl font-bold gradient-text">ImageTools Pro</span>
       <span class="hidden sm:inline-flex items-center gap-1 bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium"><span class="w-1.5 h-1.5 bg-green-500 rounded-full pulse-dot"></span>Online</span>
-    </div>
-    <!-- Desktop Nav -->
-    <nav class="hidden lg:flex items-center gap-1" id="desktopNav"></nav>
-    <!-- Mobile Menu Button -->
+    </a>
+    <nav class="hidden lg:flex items-center gap-1 flex-wrap" id="desktopNav"></nav>
     <button class="lg:hidden p-2 rounded-lg hover:bg-gray-100" onclick="toggleMobileMenu()">
       <svg id="menuIcon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     </button>
   </div>
-  <!-- Mobile Menu -->
-  <div class="hidden lg:hidden border-t bg-white shadow-lg" id="mobileMenu">
+  <div class="hidden lg:hidden border-t bg-white shadow-lg max-h-[80vh] overflow-y-auto" id="mobileMenu">
     <div class="p-4 space-y-2" id="mobileNav"></div>
   </div>
 </header>
@@ -97,120 +95,174 @@ details[open] summary .faq-arrow{transform:rotate(180deg)}
 <!-- ====== FOOTER ====== -->
 <footer class="bg-gray-900 text-gray-300 mt-16">
   <div class="max-w-7xl mx-auto px-4 py-12">
-    <!-- CTA -->
-    <div class="gradient-bg rounded-2xl p-8 text-center text-white mb-12 card-hover cursor-pointer" onclick="navigate('home')">
+    <div class="gradient-bg rounded-2xl p-8 text-center text-white mb-12 card-hover cursor-pointer" onclick="navigateTo('/')">
       <h3 class="text-2xl font-bold mb-2">Ready to Edit Your Images?</h3>
-      <p class="text-white/80 mb-4">3 powerful tools, completely free, no sign-up required</p>
+      <p class="text-white/80 mb-4">10 powerful tools, completely free, no sign-up required</p>
       <button class="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-100 transition">Get Started Free →</button>
     </div>
-    <!-- Grid -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
       <div>
-        <div class="flex items-center gap-2 mb-3">
+        <a href="/" onclick="navigateTo('/');return false" class="flex items-center gap-2 mb-3 no-underline">
           <div class="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center">
             <svg width="16" height="16" fill="none" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16" stroke="white" stroke-width="2"/></svg>
           </div>
           <span class="text-white font-bold">ImageTools Pro</span>
-        </div>
-        <p class="text-sm text-gray-400 mb-3">Free online image editing suite. Convert, compress and resize images instantly. No installation, no sign-up, completely free and private.</p>
+        </a>
+        <p class="text-sm text-gray-400 mb-3">Free online image editing suite with 10 powerful tools.</p>
         <div class="flex gap-2 flex-wrap">
           <span class="inline-flex items-center gap-1 text-xs bg-green-900/40 text-green-400 px-2 py-1 rounded-full"><span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>Online</span>
           <span class="text-xs bg-purple-900/40 text-purple-400 px-2 py-1 rounded-full">100% Free</span>
-          <span class="text-xs bg-blue-900/40 text-blue-400 px-2 py-1 rounded-full">🔒 Private</span>
         </div>
       </div>
       <div>
-        <h4 class="text-white font-semibold mb-3">Our Tools</h4>
+        <h4 class="text-white font-semibold mb-3">Convert Tools</h4>
         <ul class="space-y-2 text-sm">
-          <li><a href="#" onclick="navigate('convert');return false" class="hover:text-white transition flex items-center gap-2">🔄 PNG to JPG Converter</a></li>
-          <li><a href="#" onclick="navigate('compress');return false" class="hover:text-white transition flex items-center gap-2">🗜️ Image Compressor</a></li>
-          <li><a href="#" onclick="navigate('resize');return false" class="hover:text-white transition flex items-center gap-2">📐 Image Resizer</a></li>
+          <li><a href="/convert-to-jpg" onclick="navigateTo('/convert-to-jpg');return false" class="hover:text-white transition text-gray-400">🖼️ Convert to JPG</a></li>
+          <li><a href="/convert-from-jpg" onclick="navigateTo('/convert-from-jpg');return false" class="hover:text-white transition text-gray-400">🔄 Convert from JPG</a></li>
+          <li><a href="/png-to-jpg" onclick="navigateTo('/png-to-jpg');return false" class="hover:text-white transition text-gray-400">🔃 PNG to JPG</a></li>
+          <li><a href="/html-to-image" onclick="navigateTo('/html-to-image');return false" class="hover:text-white transition text-gray-400">🌐 HTML to Image</a></li>
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-semibold mb-3">Supported Formats</h4>
+        <h4 class="text-white font-semibold mb-3">Edit Tools</h4>
         <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> JPG / JPEG</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> PNG</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> WebP</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> GIF</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> BMP</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> SVG</li>
-          <li class="flex items-center gap-2"><span class="text-green-400">✓</span> TIFF</li>
+          <li><a href="/compress-image" onclick="navigateTo('/compress-image');return false" class="hover:text-white transition text-gray-400">🗜️ Compress</a></li>
+          <li><a href="/resize-image" onclick="navigateTo('/resize-image');return false" class="hover:text-white transition text-gray-400">📐 Resize</a></li>
+          <li><a href="/crop-image" onclick="navigateTo('/crop-image');return false" class="hover:text-white transition text-gray-400">✂️ Crop</a></li>
+          <li><a href="/rotate-image" onclick="navigateTo('/rotate-image');return false" class="hover:text-white transition text-gray-400">🔁 Rotate</a></li>
+          <li><a href="/upscale-image" onclick="navigateTo('/upscale-image');return false" class="hover:text-white transition text-gray-400">🔍 Upscale</a></li>
+          <li><a href="/photo-editor" onclick="navigateTo('/photo-editor');return false" class="hover:text-white transition text-gray-400">🎨 Photo Editor</a></li>
         </ul>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-3">Key Features</h4>
         <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2">⚡ Lightning Fast</li>
-          <li class="flex items-center gap-2">📦 Batch Processing</li>
-          <li class="flex items-center gap-2">🎨 Format Conversion</li>
-          <li class="flex items-center gap-2">🔒 100% Private</li>
-          <li class="flex items-center gap-2">📱 Mobile Friendly</li>
-          <li class="flex items-center gap-2">🆓 Always Free</li>
-          <li class="flex items-center gap-2">☁️ No Upload Needed</li>
-          <li class="flex items-center gap-2">🌐 Works Offline</li>
+          <li>⚡ Lightning Fast</li>
+          <li>📦 Batch Processing</li>
+          <li>🔒 100% Private</li>
+          <li>📱 Mobile Friendly</li>
+          <li>🆓 Always Free</li>
+          <li>🌐 Works Offline</li>
         </ul>
       </div>
     </div>
-    <!-- Tech -->
-    <div class="border-t border-gray-800 pt-6 mb-6">
-      <p class="text-xs text-gray-500 text-center mb-3">Powered By</p>
-      <div class="flex justify-center gap-3 flex-wrap">
-        <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg">🖼️ Canvas API</span>
-        <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg">⚛️ Vanilla JS</span>
-        <span class="text-xs bg-gray-800 text-gray-400 px-3 py-1.5 rounded-lg">🎨 Tailwind CSS</span>
-      </div>
-    </div>
-    <!-- Bottom -->
     <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-sm text-gray-500">© 2025 ImageTools Pro. All rights reserved.</p>
-      <p class="text-xs text-gray-600 text-center">All processing happens in your browser. Your images are never uploaded to any server.</p>
-      <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-sm text-gray-400 hover:text-white transition flex items-center gap-1">↑ Back to Top</button>
+      <p class="text-xs text-gray-600 text-center">All processing happens in your browser. Your images never leave your device.</p>
+      <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-sm text-gray-400 hover:text-white transition">↑ Back to Top</button>
     </div>
   </div>
 </footer>
 
 <script>
+// ==================== ROUTING CONFIG ====================
+const ROUTES = {
+  '/':               { id: 'home',          title: 'ImageTools Pro — Free Online Image Editor' },
+  '/convert-to-jpg': { id: 'convertjpg',    title: 'Convert Images to JPG Online — Free | ImageTools Pro' },
+  '/convert-from-jpg':{ id: 'convertfromjpg',title: 'Convert JPG to PNG, GIF, WebP — Free | ImageTools Pro' },
+  '/png-to-jpg':     { id: 'convert',       title: 'PNG to JPG Converter — Free Online | ImageTools Pro' },
+  '/compress-image': { id: 'compress',      title: 'Compress Images Online — Free | ImageTools Pro' },
+  '/resize-image':   { id: 'resize',        title: 'Resize Images Online — Free | ImageTools Pro' },
+  '/crop-image':     { id: 'crop',          title: 'Crop Images Online — Free | ImageTools Pro' },
+  '/rotate-image':   { id: 'rotate',        title: 'Rotate Images Online — Free | ImageTools Pro' },
+  '/photo-editor':   { id: 'editor',        title: 'Photo Editor Online — Free | ImageTools Pro' },
+  '/upscale-image':  { id: 'upscale',       title: 'Upscale Images Online — Free | ImageTools Pro' },
+  '/html-to-image':  { id: 'htmltoimage',   title: 'HTML to Image Converter — Free | ImageTools Pro' },
+};
+
+const META_DESC = {
+  '/': 'Free online image tools: Convert to JPG, compress, resize, crop, rotate, upscale images, photo editor. No sign-up. 100% free.',
+  '/convert-to-jpg': 'Convert PNG, GIF, TIF, PSD, SVG, WEBP, HEIC or RAW to JPG format. Convert many images to JPG online at once.',
+  '/convert-from-jpg': 'Turn JPG images to PNG, WebP and GIF. Choose several JPGs to create an animated GIF in seconds!',
+  '/png-to-jpg': 'Convert PNG images to JPG format online for free. Adjust quality, set background color, batch process.',
+  '/compress-image': 'Compress JPG, PNG, WebP images online. Reduce file size while maintaining quality. Free batch compression.',
+  '/resize-image': 'Resize JPG, PNG, SVG or GIF by defining new height and width pixels. Change image dimensions in bulk.',
+  '/crop-image': 'Crop JPG, PNG or GIF with ease. Choose pixels to define your rectangle or use our visual editor.',
+  '/rotate-image': 'Rotate many images JPG, PNG or GIF at same time. Choose to rotate only landscape or portrait images!',
+  '/photo-editor': 'Spice up your pictures with text, effects, frames or stickers. Simple editing tools for your image needs.',
+  '/upscale-image': 'Enlarge your images with high resolution. Easily increase the size of your JPG and PNG images while maintaining visual quality.',
+  '/html-to-image': 'Convert webpages in HTML to JPG or SVG. Copy and paste the URL of the page you want and convert it to an image.',
+};
+
+function getIdToPath() {
+  const map = {};
+  Object.entries(ROUTES).forEach(([path, cfg]) => { map[cfg.id] = path; });
+  return map;
+}
+const ID_TO_PATH = getIdToPath();
+
 // ==================== STATE ====================
 let currentPage = 'home';
+let convertJpgPending=[], convertPending=[], compressPending=[], resizePending=[];
+let cropPending=[], rotatePending=[], upscalePending=[], convertFromJpgPending=[];
 
 const TABS = [
   {id:'home',label:'Home',icon:'🏠',desc:'Main page'},
-  {id:'convert',label:'PNG to JPG',icon:'🔄',desc:'Convert PNG images to JPG format'},
-  {id:'compress',label:'Compress',icon:'🗜️',desc:'Reduce image file size'},
-  {id:'resize',label:'Resize',icon:'📐',desc:'Change image dimensions'}
+  {id:'convertjpg',label:'Convert to JPG',icon:'🖼️',desc:'Any format → JPG'},
+  {id:'convertfromjpg',label:'Convert from JPG',icon:'🔄',desc:'JPG → PNG, GIF, WebP'},
+  {id:'convert',label:'PNG to JPG',icon:'🔃',desc:'PNG images to JPG'},
+  {id:'compress',label:'Compress',icon:'🗜️',desc:'Reduce file size'},
+  {id:'resize',label:'Resize',icon:'📐',desc:'Change dimensions'},
+  {id:'crop',label:'Crop',icon:'✂️',desc:'Crop to selection'},
+  {id:'rotate',label:'Rotate',icon:'🔁',desc:'Rotate & flip images'},
+  {id:'editor',label:'Photo Editor',icon:'🎨',desc:'Text, effects, filters'},
+  {id:'upscale',label:'Upscale',icon:'🔍',desc:'Enlarge with quality'},
+  {id:'htmltoimage',label:'HTML to Image',icon:'🌐',desc:'Webpage → Image'},
 ];
 
 // ==================== NAVIGATION ====================
-function navigate(page) {
-  currentPage = page;
+function navigateTo(path, pushState=true) {
+  const route = ROUTES[path];
+  if (!route) { path = '/'; }
+  const cfg = ROUTES[path];
+  currentPage = cfg.id;
+
+  // Update browser URL
+  if (pushState) {
+    history.pushState({ path: path }, '', path);
+  }
+
+  // Update page title
+  document.title = cfg.title;
+
+  // Update meta description
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc && META_DESC[path]) metaDesc.setAttribute('content', META_DESC[path]);
+
+  // Update canonical
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', 'https://imagetools.app' + path);
+
   renderNav();
   renderPage();
   window.scrollTo({top:0,behavior:'smooth'});
-  const mm = document.getElementById('mobileMenu');
-  if(mm) mm.classList.add('hidden');
+  document.getElementById('mobileMenu').classList.add('hidden');
 }
 
-function toggleMobileMenu() {
-  document.getElementById('mobileMenu').classList.toggle('hidden');
-}
+// Handle browser back/forward
+window.addEventListener('popstate', function(e) {
+  const path = e.state ? e.state.path : window.location.pathname;
+  navigateTo(path, false);
+});
+
+function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
 
 function renderNav() {
   const dn = document.getElementById('desktopNav');
-  dn.innerHTML = TABS.map(t => `
-    <button onclick="navigate('${t.id}')" class="flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg transition ${currentPage===t.id?'bg-purple-100 text-purple-700 font-semibold':'text-gray-600 hover:bg-gray-100'}">
-      <span>${t.icon}</span><span>${t.label}</span>
-    </button>
-  `).join('');
-
+  dn.innerHTML = TABS.map(t => {
+    const path = ID_TO_PATH[t.id] || '/';
+    return `<a href="${path}" onclick="navigateTo('${path}');return false" class="flex items-center gap-1 px-2 py-1.5 text-xs rounded-lg transition whitespace-nowrap no-underline ${currentPage===t.id?'bg-purple-100 text-purple-700 font-semibold':'text-gray-600 hover:bg-gray-100'}">
+      <span>${t.icon}</span><span class="hide-mobile">${t.label}</span>
+    </a>`;
+  }).join('');
   const mn = document.getElementById('mobileNav');
-  mn.innerHTML = TABS.map(t => `
-    <button onclick="navigate('${t.id}')" class="w-full flex items-center gap-3 p-3 rounded-xl text-left transition ${currentPage===t.id?'bg-purple-50 border border-purple-200':'hover:bg-gray-50'}">
+  mn.innerHTML = TABS.map(t => {
+    const path = ID_TO_PATH[t.id] || '/';
+    return `<a href="${path}" onclick="navigateTo('${path}');return false" class="w-full flex items-center gap-3 p-3 rounded-xl text-left transition no-underline ${currentPage===t.id?'bg-purple-50 border border-purple-200':'hover:bg-gray-50'}">
       <span class="text-xl">${t.icon}</span>
       <div><div class="font-medium text-sm ${currentPage===t.id?'text-purple-700':'text-gray-800'}">${t.label}</div><div class="text-xs text-gray-500">${t.desc}</div></div>
-    </button>
-  `).join('');
+    </a>`;
+  }).join('');
 }
 
 // ==================== RENDER PAGE ====================
@@ -218,9 +270,16 @@ function renderPage() {
   const main = document.getElementById('mainContent');
   switch(currentPage) {
     case 'home': main.innerHTML = renderHome(); break;
+    case 'convertjpg': main.innerHTML = renderConvertJpg(); initConvertJpg(); break;
+    case 'convertfromjpg': main.innerHTML = renderConvertFromJpg(); initConvertFromJpg(); break;
     case 'convert': main.innerHTML = renderConvert(); initConvert(); break;
     case 'compress': main.innerHTML = renderCompress(); initCompress(); break;
     case 'resize': main.innerHTML = renderResize(); initResize(); break;
+    case 'crop': main.innerHTML = renderCrop(); initCrop(); break;
+    case 'rotate': main.innerHTML = renderRotate(); initRotate(); break;
+    case 'editor': main.innerHTML = renderEditor(); initEditor(); break;
+    case 'upscale': main.innerHTML = renderUpscale(); initUpscale(); break;
+    case 'htmltoimage': main.innerHTML = renderHtmlToImage(); initHtmlToImage(); break;
     default: main.innerHTML = renderHome();
   }
 }
@@ -228,39 +287,26 @@ function renderPage() {
 // ==================== UTILITIES ====================
 function formatSize(bytes) {
   if(bytes===0) return '0 B';
-  const k=1024, s=['B','KB','MB','GB'];
+  const k=1024,s=['B','KB','MB','GB'];
   const i=Math.floor(Math.log(bytes)/Math.log(k));
   return parseFloat((bytes/Math.pow(k,i)).toFixed(1))+' '+s[i];
 }
-
-function generateId() {
-  return Math.random().toString(36).substr(2,9);
-}
-
+function generateId() { return Math.random().toString(36).substr(2,9); }
 function downloadBlob(blob, filename) {
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=filename;
-  a.click();
-  URL.revokeObjectURL(a.href);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); URL.revokeObjectURL(a.href);
 }
-
 function createDropZone(id, accept, multiple=true) {
   return `
     <div id="${id}" class="drop-zone rounded-2xl p-12 text-center cursor-pointer bg-white">
       <div class="text-5xl mb-4">📁</div>
       <h3 class="text-lg font-bold text-gray-900 mb-2">Drop your images here</h3>
       <p class="text-sm text-gray-500 mb-4">or click to browse files</p>
-      <div class="inline-flex items-center gap-2 bg-purple-50 text-purple-700 text-xs font-medium px-4 py-2 rounded-full">
-        <span>Supports: ${accept.replace(/image\//g,'').replace(/,/g,', ').toUpperCase()}</span>
-      </div>
+      <div class="inline-flex items-center gap-2 bg-purple-50 text-purple-700 text-xs font-medium px-4 py-2 rounded-full">Supports: ${accept.replace(/image\//g,'').replace(/,/g,', ').toUpperCase()}</div>
       <input type="file" accept="${accept}" ${multiple?'multiple':''} class="hidden" id="${id}Input"/>
     </div>`;
 }
-
 function setupDropZone(id, onFiles) {
-  const zone=document.getElementById(id);
-  const input=document.getElementById(id+'Input');
+  const zone=document.getElementById(id), input=document.getElementById(id+'Input');
   if(!zone||!input) return;
   zone.onclick=()=>input.click();
   input.onchange=e=>onFiles(e.target.files);
@@ -269,711 +315,1046 @@ function setupDropZone(id, onFiles) {
   zone.ondrop=e=>{e.preventDefault();zone.classList.remove('dragover');onFiles(e.dataTransfer.files)};
 }
 
+function renderGenericPending(pending, toolLabel, startFn, clearAllFn, removeOneFn, dropId, colorBg) {
+  if(!pending.length) return '';
+  const fmtMap={'image/png':'PNG','image/gif':'GIF','image/webp':'WebP','image/svg+xml':'SVG','image/bmp':'BMP','image/tiff':'TIFF','image/jpeg':'JPG'};
+  return `
+    <div class="bg-white rounded-2xl border p-6 mt-6 fade-in">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-bold text-gray-900 flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg ${colorBg} flex items-center justify-center text-sm">📋</span>
+          ${pending.length} file${pending.length>1?'s':''} ready
+        </h3>
+        <button onclick="${clearAllFn}" class="text-sm text-gray-500 hover:text-red-500 transition">✕ Clear All</button>
+      </div>
+      <div class="space-y-2 mb-5 max-h-64 overflow-y-auto pr-1">
+        ${pending.map((f,i) => {
+          const ext=fmtMap[f.type]||f.name.split('.').pop().toUpperCase();
+          return `
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl group hover:bg-gray-100 transition">
+            <div class="w-10 h-10 rounded-lg ${colorBg} flex items-center justify-center text-xs font-bold">${ext}</div>
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium text-gray-900 truncate">${f.name}</div>
+              <div class="text-xs text-gray-500">${formatSize(f.size)}</div>
+            </div>
+            <button onclick="${removeOneFn}(${i})" class="opacity-0 group-hover:opacity-100 w-8 h-8 rounded-lg hover:bg-red-100 flex items-center justify-center text-gray-400 hover:text-red-500 transition text-lg">×</button>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="flex gap-3">
+        <button onclick="${startFn}" class="flex-1 gradient-bg text-white font-bold py-4 rounded-xl text-lg hover:opacity-90 transition shadow-lg shadow-purple-300/30 flex items-center justify-center gap-2">
+          🚀 ${toolLabel} ${pending.length} Image${pending.length>1?'s':''}
+        </button>
+        <button onclick="document.getElementById('${dropId}Input').click()" class="px-5 py-4 rounded-xl border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition font-medium text-gray-700">➕ Add</button>
+      </div>
+    </div>`;
+}
+
 // ==================== HOME PAGE ====================
 function renderHome() {
+  const tools = [
+    {id:'convertjpg',path:'/convert-to-jpg',icon:'🖼️',title:'Convert to JPG',desc:'Transform PNG, GIF, TIF, PSD, SVG, WEBP, HEIC or RAW to JPG format.',tags:['PNG','GIF','WEBP','HEIC','SVG','RAW'],color:'from-blue-500 to-cyan-500',badge:'POPULAR'},
+    {id:'convertfromjpg',path:'/convert-from-jpg',icon:'🔄',title:'Convert from JPG',desc:'Turn JPG images to PNG, WebP and GIF. Create animated GIF from multiple JPGs!',tags:['→PNG','→WebP','→GIF','Animated'],color:'from-emerald-500 to-teal-500',badge:'NEW'},
+    {id:'convert',path:'/png-to-jpg',icon:'🔃',title:'PNG to JPG',desc:'Convert PNG images to JPG format with quality control and background color settings.',tags:['PNG','JPG','Batch'],color:'from-purple-500 to-pink-500',badge:''},
+    {id:'compress',path:'/compress-image',icon:'🗜️',title:'Compress Image',desc:'Reduce file size of JPG, PNG, WebP images while maintaining visual quality.',tags:['JPG','PNG','WebP','Size'],color:'from-orange-500 to-red-500',badge:'POPULAR'},
+    {id:'resize',path:'/resize-image',icon:'📐',title:'Resize Image',desc:'Resize JPG, PNG, SVG or GIF by defining new height and width pixels.',tags:['Pixels','Percentage','Presets'],color:'from-violet-500 to-purple-500',badge:''},
+    {id:'crop',path:'/crop-image',icon:'✂️',title:'Crop Image',desc:'Crop JPG, PNG, or GIFs with ease. Use our visual editor or define exact pixels.',tags:['Visual','Aspect Ratio','Precise'],color:'from-pink-500 to-rose-500',badge:'NEW'},
+    {id:'rotate',path:'/rotate-image',icon:'🔁',title:'Rotate Image',desc:'Rotate many images JPG, PNG or GIF at same time. Flip horizontally or vertically.',tags:['90°','180°','Custom','Flip'],color:'from-cyan-500 to-blue-500',badge:''},
+    {id:'editor',path:'/photo-editor',icon:'🎨',title:'Photo Editor',desc:'Spice up your pictures with text, effects, frames or stickers.',tags:['Filters','Text','Effects','Presets'],color:'from-fuchsia-500 to-pink-500',badge:'PRO'},
+    {id:'upscale',path:'/upscale-image',icon:'🔍',title:'Upscale Image',desc:'Enlarge your images with high resolution while maintaining visual quality.',tags:['2×','4×','8×','HD'],color:'from-amber-500 to-orange-500',badge:''},
+    {id:'htmltoimage',path:'/html-to-image',icon:'🌐',title:'HTML to Image',desc:'Convert webpages in HTML to JPG or SVG. Paste URL or HTML code.',tags:['URL','HTML','SVG','JPG'],color:'from-red-500 to-pink-500',badge:''},
+  ];
   return `
   <div class="fade-in">
     <!-- Hero -->
-    <section class="relative overflow-hidden py-16 md:py-24 px-4">
-      <div class="blob-1"></div>
-      <div class="blob-2"></div>
+    <section class="relative overflow-hidden py-20 px-4">
+      <div class="blob-1"></div><div class="blob-2"></div>
       <div class="max-w-5xl mx-auto text-center relative z-10">
-        <div class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 text-sm font-medium px-4 py-2 rounded-full mb-6">
-          ✨ 100% Free — No Sign-Up Required
-        </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
-          Edit Your Images<br/><span class="gradient-text">Online & Free</span>
-        </h1>
-        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-          Convert, compress, and resize your images instantly — right in your browser. No uploads to servers, no sign-ups, completely private and free.
-        </p>
+        <div class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 text-sm font-medium px-4 py-2 rounded-full mb-6">✨ Free Online Image Tools — No Sign-Up Required</div>
+        <h1 class="text-4xl md:text-6xl font-black text-gray-900 mb-6 leading-tight">All-in-One<br/><span class="gradient-text">Image Editing Suite</span></h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-8">10 powerful tools to convert, compress, resize, crop, rotate, upscale, and edit your images. 100% free, no sign-up, works entirely in your browser.</p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-          <button onclick="navigate('convert')" class="gradient-bg text-white font-semibold px-8 py-4 rounded-xl hover:opacity-90 transition text-lg shadow-lg shadow-purple-300/30">
-            Start Editing — It's Free →
-          </button>
-          <button onclick="document.getElementById('toolsSection').scrollIntoView({behavior:'smooth'})" class="bg-white text-gray-700 font-semibold px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition text-lg">
-            Explore All Tools
-          </button>
+          <a href="/convert-to-jpg" onclick="navigateTo('/convert-to-jpg');return false" class="gradient-bg text-white font-bold px-8 py-4 rounded-xl text-lg hover:opacity-90 transition shadow-lg shadow-purple-300/30 no-underline">Start Editing — It's Free</a>
+          <a href="#tools" class="bg-white text-gray-700 font-bold px-8 py-4 rounded-xl text-lg border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition no-underline">Explore All Tools ↓</a>
         </div>
-        <div class="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
-          <span class="flex items-center gap-1.5"><span class="w-2 h-2 bg-green-500 rounded-full"></span>No Sign-Up</span>
-          <span class="flex items-center gap-1.5">🔒 100% Private</span>
-          <span class="flex items-center gap-1.5">⚡ Instant Processing</span>
-          <span class="flex items-center gap-1.5">📱 Works on Mobile</span>
+        <div class="flex flex-wrap justify-center gap-3">
+          <span class="bg-white px-3 py-1.5 rounded-full text-xs text-gray-600 border shadow-sm">🔒 Your files stay private</span>
+          <span class="bg-white px-3 py-1.5 rounded-full text-xs text-gray-600 border shadow-sm">⚡ Lightning fast</span>
+          <span class="bg-white px-3 py-1.5 rounded-full text-xs text-gray-600 border shadow-sm">📦 Batch processing</span>
+          <span class="bg-white px-3 py-1.5 rounded-full text-xs text-gray-600 border shadow-sm">📱 Works on mobile</span>
         </div>
       </div>
     </section>
 
     <!-- Stats -->
-    <section class="bg-white border-y py-8 px-4">
-      <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div><div class="text-3xl font-extrabold gradient-text">3</div><div class="text-sm text-gray-500">Free Tools</div></div>
-        <div><div class="text-3xl font-extrabold gradient-text">7+</div><div class="text-sm text-gray-500">Image Formats</div></div>
-        <div><div class="text-3xl font-extrabold gradient-text">100%</div><div class="text-sm text-gray-500">Free Forever</div></div>
-        <div><div class="text-3xl font-extrabold gradient-text">0</div><div class="text-sm text-gray-500">Sign-Ups Required</div></div>
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        ${[{n:'10',l:'Free Tools',i:'🛠️'},{n:'15+',l:'Image Formats',i:'📁'},{n:'100%',l:'Free Forever',i:'🆓'},{n:'0',l:'Sign-ups Required',i:'🔓'}].map(s=>`
+        <div class="bg-white rounded-2xl border p-4 text-center card-hover">
+          <div class="text-2xl mb-1">${s.i}</div>
+          <div class="text-2xl font-black gradient-text">${s.n}</div>
+          <div class="text-xs text-gray-500">${s.l}</div>
+        </div>`).join('')}
       </div>
     </section>
 
-    <!-- Tools Section -->
-    <section id="toolsSection" class="py-16 px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our <span class="gradient-text">Powerful</span> Tools</h2>
-          <p class="text-gray-600 max-w-xl mx-auto">Everything you need to edit images online. Fast, free and private.</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          ${[
-            {id:'convert',icon:'🔄',title:'PNG to JPG',desc:'Convert PNG images to JPG format with adjustable quality and custom background color for transparent areas. Batch processing supported.',tags:['PNG','JPG','Batch','Quality Control'],color:'blue'},
-            {id:'compress',icon:'🗜️',title:'Compress Image',desc:'Reduce image file sizes without losing quality. Support for JPG, PNG and WebP output formats with fine-grained quality control.',tags:['JPG','PNG','WebP','Size Reduction'],color:'emerald'},
-            {id:'resize',icon:'📐',title:'Resize Image',desc:'Resize your images by exact pixels, percentage, or choose from ready-made presets for social media, web and print.',tags:['Pixels','Percentage','Presets','Aspect Ratio'],color:'orange'}
-          ].map(t => `
-            <div class="bg-white rounded-2xl border p-6 card-hover cursor-pointer group" onclick="navigate('${t.id}')">
-              <div class="w-14 h-14 rounded-2xl bg-${t.color}-100 flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition">${t.icon}</div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">${t.title}</h3>
-              <p class="text-sm text-gray-600 mb-4 leading-relaxed">${t.desc}</p>
-              <div class="flex flex-wrap gap-1.5 mb-4">${t.tags.map(tag=>`<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">${tag}</span>`).join('')}</div>
-              <div class="text-purple-600 font-medium text-sm group-hover:translate-x-1 transition-transform">Use Tool →</div>
-            </div>
-          `).join('')}
-        </div>
+    <!-- Tools Grid -->
+    <section class="max-w-7xl mx-auto px-4 mb-16" id="tools">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">Our <span class="gradient-text">Tools</span></h2>
+        <p class="text-gray-600">Everything you need to work with images, all in one place</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        ${tools.map(t=>`
+        <a href="${t.path}" onclick="navigateTo('${t.path}');return false" class="bg-white rounded-2xl border p-6 card-hover cursor-pointer group relative overflow-hidden no-underline block">
+          ${t.badge?`<div class="absolute top-4 right-4 bg-gradient-to-r ${t.color} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${t.badge}</div>`:''}
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${t.color} flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition">${t.icon}</div>
+          <h3 class="text-lg font-bold text-gray-900 mb-2">${t.title}</h3>
+          <p class="text-sm text-gray-600 mb-4">${t.desc}</p>
+          <div class="flex flex-wrap gap-1">
+            ${t.tags.map(tag=>`<span class="text-[10px] font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">${tag}</span>`).join('')}
+          </div>
+          <div class="mt-4 text-sm font-semibold text-purple-600 group-hover:text-purple-700 transition">Use Tool →</div>
+        </a>`).join('')}
       </div>
     </section>
 
     <!-- Why Choose Us -->
-    <section class="bg-white py-16 px-4 border-y">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose <span class="gradient-text">ImageTools Pro</span>?</h2>
-        </div>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          ${[
-            {icon:'🔒',title:'Privacy First',desc:'All processing happens in your browser. Images never leave your device — zero server uploads.'},
-            {icon:'⚡',title:'Lightning Fast',desc:'Powered by HTML5 Canvas API for instant results. No waiting, no queues.'},
-            {icon:'📦',title:'Batch Processing',desc:'Process multiple images at once. Upload in bulk and download all results with one click.'},
-            {icon:'🎛️',title:'Full Control',desc:'Fine-tune quality, dimensions, formats, and more. Get exactly the output you need.'},
-            {icon:'📱',title:'Works Everywhere',desc:'Fully responsive design works on desktop, tablet, and mobile browsers.'},
-            {icon:'🆓',title:'100% Free',desc:'No hidden fees, no premium plans, no limits. Every feature is completely free forever.'}
-          ].map(f => `
-            <div class="bg-gray-50 rounded-2xl p-6 card-hover">
-              <div class="text-3xl mb-3">${f.icon}</div>
-              <h3 class="font-bold text-gray-900 mb-2">${f.title}</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">${f.desc}</p>
-            </div>
-          `).join('')}
-        </div>
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">Why Choose <span class="gradient-text">ImageTools Pro</span>?</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        ${[
+          {i:'🔒',t:'Privacy First',d:'All processing happens in your browser. Your images never leave your device.'},
+          {i:'⚡',t:'Lightning Fast',d:'No uploading to servers. Instant processing using your device\'s power.'},
+          {i:'📦',t:'Batch Processing',d:'Process multiple images at once. Save hours of manual work.'},
+          {i:'🎯',t:'Full Control',d:'Adjust quality, dimensions, format, and more with intuitive controls.'},
+          {i:'📱',t:'Works Everywhere',d:'Use on any device — desktop, tablet, or phone. No app download needed.'},
+          {i:'🆓',t:'100% Free',d:'No hidden fees, no watermarks, no limits. All tools are completely free.'},
+        ].map(f=>`
+        <div class="bg-white rounded-2xl border p-6 card-hover">
+          <div class="text-3xl mb-3">${f.i}</div>
+          <h3 class="font-bold text-gray-900 mb-2">${f.t}</h3>
+          <p class="text-sm text-gray-600">${f.d}</p>
+        </div>`).join('')}
       </div>
     </section>
 
-    <!-- How It Works -->
-    <section class="py-16 px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">How It <span class="gradient-text">Works</span></h2>
-          <p class="text-gray-600">Three simple steps to edit your images</p>
-        </div>
-        <div class="grid md:grid-cols-3 gap-8">
-          ${[
-            {num:'1',icon:'📤',title:'Upload',desc:'Drag and drop your images or click to browse. Supports JPG, PNG, WebP, GIF, BMP and more.'},
-            {num:'2',icon:'⚙️',title:'Configure',desc:'Choose your settings: quality level, output format, dimensions, or presets. Preview before processing.'},
-            {num:'3',icon:'📥',title:'Download',desc:'Get your processed images instantly. Download individually or all at once with batch download.'}
-          ].map(s => `
-            <div class="text-center">
-              <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 shadow-lg shadow-purple-300/30">${s.num}</div>
-              <div class="text-3xl mb-3">${s.icon}</div>
-              <h3 class="font-bold text-gray-900 mb-2 text-lg">${s.title}</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">${s.desc}</p>
-            </div>
-          `).join('')}
-        </div>
+    <!-- How it works -->
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">How It <span class="gradient-text">Works</span></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        ${[{n:'1',t:'Upload',d:'Drag & drop your images or click to browse. Supports 15+ formats.',i:'📤'},
+           {n:'2',t:'Configure',d:'Adjust settings like quality, size, format, and other options.',i:'⚙️'},
+           {n:'3',t:'Download',d:'Click the action button to process, then download your results instantly.',i:'📥'}].map(s=>`
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4 shadow-lg">${s.n}</div>
+          <div class="text-3xl mb-2">${s.i}</div>
+          <h3 class="font-bold text-gray-900 mb-2">${s.t}</h3>
+          <p class="text-sm text-gray-600">${s.d}</p>
+        </div>`).join('')}
       </div>
     </section>
 
-    <!-- Supported Formats -->
-    <section class="bg-white py-16 px-4 border-y">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Supported <span class="gradient-text">Formats</span></h2>
-        </div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-4">
-          ${['JPG','PNG','WebP','GIF','BMP','SVG','TIFF'].map(f => `
-            <div class="bg-gray-50 rounded-xl p-4 text-center card-hover">
-              <div class="text-2xl mb-1">🖼️</div>
-              <div class="font-bold text-sm text-gray-900">${f}</div>
-            </div>
-          `).join('')}
-        </div>
+    <!-- Formats -->
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">Supported <span class="gradient-text">Formats</span></h2>
+      </div>
+      <div class="flex flex-wrap justify-center gap-3">
+        ${['JPG','PNG','WebP','GIF','BMP','SVG','TIFF','HEIC','PSD','RAW','CR2','NEF','ARW','DNG','ICO'].map(f=>`
+        <div class="bg-white rounded-xl border px-4 py-3 text-center card-hover">
+          <div class="text-sm font-bold text-gray-900">${f}</div>
+        </div>`).join('')}
       </div>
     </section>
 
     <!-- Use Cases -->
-    <section class="py-16 px-4">
-      <div class="max-w-5xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Perfect For <span class="gradient-text">Every Use Case</span></h2>
-        </div>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          ${[
-            {icon:'🛒',title:'E-Commerce',desc:'Optimize product photos for faster loading and better SEO rankings.'},
-            {icon:'📱',title:'Social Media',desc:'Resize images to perfect dimensions for Instagram, Facebook, Twitter and more.'},
-            {icon:'💻',title:'Web Development',desc:'Compress images for faster page loads and better Core Web Vitals scores.'},
-            {icon:'🎨',title:'Graphic Design',desc:'Convert between formats and resize assets for your design projects.'},
-            {icon:'📸',title:'Photography',desc:'Batch process and optimize your photo collections efficiently.'},
-            {icon:'📧',title:'Email Marketing',desc:'Compress images for email campaigns to reduce load time and file size.'}
-          ].map(u => `
-            <div class="bg-white rounded-2xl border p-6 card-hover">
-              <div class="text-3xl mb-3">${u.icon}</div>
-              <h3 class="font-bold text-gray-900 mb-2">${u.title}</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">${u.desc}</p>
-            </div>
-          `).join('')}
-        </div>
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3">Perfect <span class="gradient-text">For</span></h2>
       </div>
-    </section>
-
-    <!-- Comparison -->
-    <section class="bg-white py-16 px-4 border-y">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">ImageTools Pro <span class="gradient-text">vs Others</span></h2>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="border-b">
-                <th class="text-left py-3 px-4 font-semibold text-gray-900">Feature</th>
-                <th class="py-3 px-4 font-semibold gradient-text">ImageTools Pro</th>
-                <th class="py-3 px-4 font-semibold text-gray-500">Other Tools</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${[
-                ['100% Free','✅','❌ Freemium'],
-                ['No Sign-Up','✅','❌ Required'],
-                ['Privacy (No Upload)','✅','❌ Server Upload'],
-                ['Batch Processing','✅','⚠️ Limited'],
-                ['Mobile Friendly','✅','⚠️ Partial'],
-                ['No File Size Limit','✅','❌ 5-25MB'],
-                ['Multiple Formats','✅','⚠️ Some'],
-                ['No Watermark','✅','❌ Premium Only']
-              ].map(r => `
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="py-3 px-4 font-medium text-gray-900">${r[0]}</td>
-                  <td class="py-3 px-4 text-center"><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-medium">${r[1]}</span></td>
-                  <td class="py-3 px-4 text-center text-gray-500 text-xs">${r[2]}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        ${[{i:'🛒',t:'E-commerce',d:'Product photos'},
+           {i:'📱',t:'Social Media',d:'Posts & stories'},
+           {i:'💻',t:'Web Development',d:'Optimized assets'},
+           {i:'🎨',t:'Graphic Design',d:'Quick edits'},
+           {i:'📸',t:'Photography',d:'Batch processing'},
+           {i:'📧',t:'Marketing',d:'Campaign images'}].map(u=>`
+        <div class="bg-white rounded-2xl border p-4 text-center card-hover">
+          <div class="text-2xl mb-2">${u.i}</div>
+          <div class="font-bold text-sm text-gray-900">${u.t}</div>
+          <div class="text-xs text-gray-500">${u.d}</div>
+        </div>`).join('')}
       </div>
     </section>
 
     <!-- FAQ -->
-    <section class="py-16 px-4">
-      <div class="max-w-3xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Frequently Asked <span class="gradient-text">Questions</span></h2>
-        </div>
-        <div class="space-y-3">
-          ${[
-            {q:'Is ImageTools Pro really free?',a:'Yes! All tools are 100% free with no hidden fees, no premium plans, and no usage limits. Every feature is available to everyone.'},
-            {q:'Are my images safe and private?',a:'Absolutely. All image processing happens directly in your browser using HTML5 Canvas API. Your images are never uploaded to any server. We have zero access to your files.'},
-            {q:'What image formats are supported?',a:'We support JPG/JPEG, PNG, WebP, GIF, BMP, SVG, and TIFF. You can convert between formats, compress, and resize any of these.'},
-            {q:'Can I process multiple images at once?',a:'Yes! All our tools support batch processing. Upload multiple images and process them all at once, then download individually or as a batch.'},
-            {q:'Do I need to create an account?',a:'No! There is no sign-up, no login, no account needed. Just open the website and start editing your images immediately.'},
-            {q:'Is there a file size limit?',a:'There is no hard file size limit since processing happens in your browser. However, very large files may take longer depending on your device performance.'},
-            {q:'Does it work on mobile devices?',a:'Yes! ImageTools Pro is fully responsive and works on all modern browsers including Chrome, Firefox, Safari, and Edge on both desktop and mobile.'},
-            {q:'Do I need to install anything?',a:'No installation required. ImageTools Pro runs entirely in your web browser. Just visit the website and start using it.'}
-          ].map(faq => `
-            <details class="bg-white rounded-xl border group">
-              <summary class="flex items-center justify-between p-5 font-medium text-gray-900 hover:bg-gray-50 rounded-xl transition">
-                <span>${faq.q}</span>
-                <span class="faq-arrow transition-transform text-gray-400 ml-4">▼</span>
-              </summary>
-              <div class="px-5 pb-5 text-sm text-gray-600 leading-relaxed">${faq.a}</div>
-            </details>
-          `).join('')}
-        </div>
+    <section class="max-w-3xl mx-auto px-4 mb-16">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-gray-900 mb-3"><span class="gradient-text">FAQ</span></h2>
+      </div>
+      <div class="space-y-3">
+        ${[
+          {q:'Is ImageTools Pro really free?',a:'Yes! All 10 tools are completely free with no hidden fees, watermarks, or usage limits.'},
+          {q:'Are my images safe?',a:'Absolutely. All processing happens directly in your browser. Your images are never uploaded to any server.'},
+          {q:'What formats are supported?',a:'We support JPG, PNG, WebP, GIF, BMP, SVG, TIFF, HEIC, PSD, RAW (CR2, NEF, ARW, DNG), and more.'},
+          {q:'Can I process multiple images at once?',a:'Yes! Most of our tools support batch processing. Upload multiple files and process them all at once.'},
+          {q:'Do I need to install anything?',a:'No installation needed. Everything works directly in your web browser on any device.'},
+          {q:'Is there a file size limit?',a:'There is no strict limit. Processing happens on your device, so it depends on your device memory. Most images up to 50MB work fine.'},
+          {q:'Can I use this on my phone?',a:'Yes! All tools are fully responsive and work on mobile browsers.'},
+          {q:'How does the upscale tool work?',a:'It uses multi-step bicubic interpolation with image smoothing to enlarge images while preserving visual quality.'},
+        ].map(f=>`
+        <details class="bg-white rounded-xl border p-4 group">
+          <summary class="flex items-center justify-between font-medium text-gray-900">
+            ${f.q}
+            <span class="faq-arrow transition-transform text-gray-400">▼</span>
+          </summary>
+          <p class="mt-3 text-sm text-gray-600">${f.a}</p>
+        </details>`).join('')}
       </div>
     </section>
 
-    <!-- Final CTA -->
-    <section class="py-16 px-4">
-      <div class="max-w-4xl mx-auto gradient-bg rounded-3xl p-10 md:p-16 text-center text-white">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Start Editing Your Images Now</h2>
-        <p class="text-white/80 text-lg mb-8 max-w-xl mx-auto">No sign-up, no downloads, no limits. Choose a tool below and get started instantly.</p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <button onclick="navigate('convert')" class="bg-white text-purple-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-100 transition">🔄 Convert PNG to JPG</button>
-          <button onclick="navigate('compress')" class="bg-white/20 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/30 transition border border-white/30">🗜️ Compress Image</button>
-          <button onclick="navigate('resize')" class="bg-white/20 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/30 transition border border-white/30">📐 Resize Image</button>
+    <!-- CTA -->
+    <section class="max-w-4xl mx-auto px-4 mb-16">
+      <div class="gradient-bg rounded-2xl p-10 text-center text-white">
+        <h2 class="text-3xl font-bold mb-4">Start Editing Your Images Now</h2>
+        <p class="text-white/80 mb-6 max-w-lg mx-auto">No sign-up, no download, no limits. Just powerful image tools that work instantly in your browser.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          ${tools.slice(0,5).map(t=>`<a href="${t.path}" onclick="navigateTo('${t.path}');return false" class="bg-white/20 hover:bg-white/30 text-white font-medium px-4 py-2 rounded-lg text-sm transition backdrop-blur no-underline">${t.icon} ${t.title}</a>`).join('')}
         </div>
       </div>
     </section>
 
     <!-- SEO Content -->
-    <section class="bg-white py-16 px-4 border-t">
-      <div class="max-w-4xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-12">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Free Online Image Editor</h2>
-            <p class="text-sm text-gray-600 leading-relaxed mb-4">ImageTools Pro is a comprehensive online image editing suite that lets you convert, compress, and resize images directly in your browser. Unlike other tools that require uploading your files to remote servers, ImageTools Pro processes everything locally using modern browser APIs.</p>
-            <p class="text-sm text-gray-600 leading-relaxed">Whether you need to convert PNG files to JPG for smaller file sizes, compress images for faster website loading, or resize photos for social media, ImageTools Pro has you covered — completely free and without any sign-up requirements.</p>
-          </div>
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Privacy-First Image Processing</h2>
-            <p class="text-sm text-gray-600 leading-relaxed mb-4">Your privacy matters. ImageTools Pro uses the HTML5 Canvas API to process all images directly in your web browser. This means your images never leave your device — there are no server uploads, no data collection, and no third-party access to your files.</p>
-            <p class="text-sm text-gray-600 leading-relaxed">This approach not only protects your privacy but also makes processing faster since there is no upload/download time. It works even without an internet connection once the page is loaded.</p>
-          </div>
+    <section class="max-w-5xl mx-auto px-4 mb-16">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <h2 class="text-xl font-bold text-gray-900 mb-3">Free Online Image Editor</h2>
+          <p class="text-sm text-gray-600 leading-relaxed">ImageTools Pro provides a comprehensive suite of free online image editing tools. Whether you need to convert images between formats, compress photos for web use, resize images for social media, crop to specific dimensions, rotate and flip images, upscale low-resolution photos, or apply creative filters — we have the right tool for you. All processing happens directly in your browser, ensuring your images remain private and secure.</p>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-gray-900 mb-3">Privacy-First Image Processing</h2>
+          <p class="text-sm text-gray-600 leading-relaxed">Unlike other online image tools that upload your files to remote servers, ImageTools Pro processes everything locally in your browser using the Canvas API. This means your sensitive images never leave your device, there's no waiting for server uploads, and you can even use most tools offline. We believe in putting user privacy first while delivering professional-grade results.</p>
         </div>
       </div>
     </section>
   </div>`;
 }
 
-// ==================== PNG TO JPG CONVERTER ====================
-let convertFiles = [];
-let convertQuality = 92;
-let convertBgColor = '#ffffff';
-
-function renderConvert() {
+// ==================== CONVERT TO JPG ====================
+let convertJpgFiles=[], cjQuality=92, cjBgColor='#ffffff';
+function renderConvertJpg(){
   return `
   <div class="fade-in max-w-4xl mx-auto px-4 py-12">
     <div class="text-center mb-8">
-      <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🔄 PNG to JPG Converter</div>
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Convert PNG to <span class="gradient-text">JPG</span></h1>
-      <p class="text-gray-600 max-w-xl mx-auto">Convert your PNG images to JPG format with adjustable quality. Perfect for reducing file sizes.</p>
+      <div class="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🖼️ Image Converter</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Convert Images to <span class="gradient-text">JPG</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Transform PNG, GIF, TIF, PSD, SVG, WEBP, HEIC or RAW to JPG format. Convert many images to JPG online at once.</p>
     </div>
-    ${createDropZone('convertDrop','image/png')}
-    <!-- Settings -->
+    ${createDropZone('cjDrop','image/*,.psd,.raw,.cr2,.nef,.arw,.dng,.heic,.heif,.tif,.tiff')}
     <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Conversion Settings</h3>
       <div class="grid md:grid-cols-2 gap-6">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="convertQualityVal" class="text-purple-600 font-bold">${convertQuality}%</span></label>
-          <input type="range" min="1" max="100" value="${convertQuality}" class="w-full" oninput="convertQuality=+this.value;document.getElementById('convertQualityVal').textContent=this.value+'%'"/>
-          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Smallest File</span><span>Best Quality</span></div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">JPG Quality: <span id="cjQVal" class="text-purple-600 font-bold">${cjQuality}%</span></label>
+          <input type="range" min="1" max="100" value="${cjQuality}" class="w-full" oninput="cjQuality=+this.value;document.getElementById('cjQVal').textContent=this.value+'%'"/>
+          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Small file</span><span>Best quality</span></div>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Background Color (for transparency)</label>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Background Color (for transparent images)</label>
           <div class="flex items-center gap-3">
-            <input type="color" value="${convertBgColor}" class="w-10 h-10 rounded-lg cursor-pointer border-0" onchange="convertBgColor=this.value"/>
-            <div class="flex gap-2">
-              ${['#ffffff','#000000','#f3f4f6','#fef3c7','#dbeafe'].map(c => `<button onclick="convertBgColor='${c}';document.querySelector('input[type=color]').value='${c}'" class="w-8 h-8 rounded-lg border-2 hover:scale-110 transition" style="background:${c};border-color:${c==='#ffffff'?'#e5e7eb':c}"></button>`).join('')}
+            <input type="color" value="${cjBgColor}" class="w-10 h-10 rounded-lg border cursor-pointer" onchange="cjBgColor=this.value"/>
+            <div class="flex gap-1">${['#ffffff','#000000','#f3f4f6','#fef3c7','#dbeafe','#fce7f3'].map(c=>`<button onclick="cjBgColor='${c}';document.querySelector('#cjDrop').parentElement.querySelector('input[type=color]').value='${c}'" class="w-8 h-8 rounded-lg border-2 hover:scale-110 transition" style="background:${c}"></button>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="cjPending"></div>
+    <div id="cjSummary" class="hidden mt-4"></div>
+    <div id="cjResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function initConvertJpg(){
+  convertJpgFiles=[];convertJpgPending=[];cjQuality=92;cjBgColor='#ffffff';
+  setupDropZone('cjDrop',files=>{[...files].forEach(f=>convertJpgPending.push(f));renderCjPending()});
+}
+function cjPendingRemove(i){convertJpgPending.splice(i,1);renderCjPending()}
+function renderCjPending(){document.getElementById('cjPending').innerHTML=renderGenericPending(convertJpgPending,'Convert','startConvertJpg()','convertJpgPending=[];renderCjPending()','cjPendingRemove','cjDrop','bg-blue-100 text-blue-700')}
+function startConvertJpg(){if(!convertJpgPending.length)return;const f=[...convertJpgPending];convertJpgPending=[];renderCjPending();f.forEach(processConvertJpg)}
+function processConvertJpg(file){
+  const id=generateId();convertJpgFiles.push({id,file,status:'processing'});
+  const fmtMap={'image/png':'PNG','image/gif':'GIF','image/webp':'WebP','image/svg+xml':'SVG','image/bmp':'BMP','image/tiff':'TIFF'};
+  const ext=fmtMap[file.type]||file.name.split('.').pop().toUpperCase();
+  document.getElementById('cjResults').insertAdjacentHTML('beforeend',`<div id="cj_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Converting ${ext} → JPG...</div></div></div></div>`);
+  const loadImage = (file) => {
+    return new Promise((resolve, reject) => {
+      if(file.type==='image/svg+xml'){
+        const reader=new FileReader();reader.onload=e=>{
+          const blob=new Blob([e.target.result],{type:'image/svg+xml'});
+          const url=URL.createObjectURL(blob);const img=new Image();
+          img.onload=()=>resolve(img);img.onerror=reject;img.src=url;
+        };reader.readAsText(file);
+      } else {
+        const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;
+        img.src=URL.createObjectURL(file);
+      }
+    });
+  };
+  loadImage(file).then(img=>{
+    const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');
+    ctx.fillStyle=cjBgColor;ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);
+    c.toBlob(blob=>{
+      const item=convertJpgFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const nn=file.name.replace(/\.[^.]+$/,'.jpg');item.newName=nn;const pu=URL.createObjectURL(blob);
+      const savings=((1-blob.size/file.size)*100).toFixed(1);
+      document.getElementById(`cj_${id}`).innerHTML=`<div class="flex items-start gap-4"><div class="relative"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><span class="absolute -top-2 -left-2 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">${ext}</span></div><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500 mt-0.5">${ext} → JPG • ${img.width}×${img.height}</div><div class="flex items-center gap-2 mt-1"><span class="text-xs text-gray-500">${formatSize(file.size)} → ${formatSize(blob.size)}</span><span class="text-xs font-medium ${savings>0?'text-green-600':'text-amber-600'}">${savings>0?'↓':'↑'}${Math.abs(savings)}%</span></div></div><button onclick="downloadBlob(convertJpgFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateCjBatch();
+    },'image/jpeg',cjQuality/100);
+  }).catch(()=>{
+    document.getElementById(`cj_${id}`).innerHTML=`<div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-red-100 flex items-center justify-center text-xl">❌</div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-red-500">Conversion failed. Format may not be supported by your browser.</div></div></div>`;
+  });
+}
+function updateCjBatch(){
+  const done=convertJpgFiles.filter(f=>f.status==='done');if(!done.length)return;
+  const ts=done.reduce((a,f)=>a+f.blob.size,0);
+  document.getElementById('cjSummary').classList.remove('hidden');
+  document.getElementById('cjSummary').innerHTML=`<div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl border border-blue-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">✅</div><div class="text-sm"><span class="font-bold">${done.length} converted</span> <span class="text-gray-500">• Total: ${formatSize(ts)}</span></div></div><div class="flex gap-2">${done.length>1?`<button onclick="convertJpgFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="convertJpgFiles=[];document.getElementById('cjResults').innerHTML='';document.getElementById('cjSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== CONVERT FROM JPG ====================
+let convertFromJpgFiles=[], cfjFormat='png', cfjQuality=92;
+function renderConvertFromJpg(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🔄 Format Converter</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Convert from <span class="gradient-text">JPG</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Turn JPG images to PNG, WebP and GIF. Choose several JPGs to create an animated GIF in seconds!</p>
+    </div>
+    ${createDropZone('cfjDrop','image/jpeg')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Output Format</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        ${[{v:'png',l:'PNG',d:'Lossless, transparency'},{v:'webp',l:'WebP',d:'Small size, modern'},{v:'gif',l:'GIF',d:'Simple, universal'},{v:'bmp',l:'BMP',d:'Uncompressed'}].map(f=>`
+        <button onclick="setCfjFormat('${f.v}')" id="cfj_${f.v}" class="p-4 rounded-xl border-2 text-left transition ${cfjFormat===f.v?'border-emerald-500 bg-emerald-50':'border-gray-200 hover:bg-gray-50'}">
+          <div class="font-bold ${cfjFormat===f.v?'text-emerald-700':'text-gray-900'}">${f.l}</div>
+          <div class="text-xs text-gray-500">${f.d}</div>
+        </button>`).join('')}
+      </div>
+      ${cfjFormat!=='gif'&&cfjFormat!=='bmp'?`<div><label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="cfjQVal" class="text-purple-600 font-bold">${cfjQuality}%</span></label><input type="range" min="1" max="100" value="${cfjQuality}" class="w-full" oninput="cfjQuality=+this.value;document.getElementById('cfjQVal').textContent=this.value+'%'"/></div>`:''}
+    </div>
+    <div id="cfjPending"></div>
+    <div id="cfjSummary" class="hidden mt-4"></div>
+    <div id="cfjResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function setCfjFormat(v){cfjFormat=v;['png','webp','gif','bmp'].forEach(f=>{const b=document.getElementById('cfj_'+f);if(b)b.className=`p-4 rounded-xl border-2 text-left transition ${cfjFormat===f?'border-emerald-500 bg-emerald-50':'border-gray-200 hover:bg-gray-50'}`})}
+function initConvertFromJpg(){convertFromJpgFiles=[];convertFromJpgPending=[];cfjFormat='png';cfjQuality=92;setupDropZone('cfjDrop',files=>{[...files].filter(f=>f.type==='image/jpeg').forEach(f=>convertFromJpgPending.push(f));renderCfjPending()})}
+function cfjPendingRemove(i){convertFromJpgPending.splice(i,1);renderCfjPending()}
+function renderCfjPending(){document.getElementById('cfjPending').innerHTML=renderGenericPending(convertFromJpgPending,'Convert','startConvertFromJpg()','convertFromJpgPending=[];renderCfjPending()','cfjPendingRemove','cfjDrop','bg-emerald-100 text-emerald-700')}
+function startConvertFromJpg(){if(!convertFromJpgPending.length)return;const f=[...convertFromJpgPending];convertFromJpgPending=[];renderCfjPending();f.forEach(processConvertFromJpg)}
+function processConvertFromJpg(file){
+  const id=generateId();convertFromJpgFiles.push({id,file,status:'processing'});
+  const outMime=cfjFormat==='png'?'image/png':cfjFormat==='webp'?'image/webp':cfjFormat==='gif'?'image/gif':'image/bmp';
+  const outExt=cfjFormat;
+  document.getElementById('cfjResults').insertAdjacentHTML('beforeend',`<div id="cfj_r_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Converting JPG → ${outExt.toUpperCase()}...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');
+    ctx.drawImage(img,0,0);
+    c.toBlob(blob=>{
+      const item=convertFromJpgFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const nn=file.name.replace(/\.[^.]+$/,'.'+outExt);item.newName=nn;const pu=URL.createObjectURL(blob);
+      document.getElementById(`cfj_r_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">JPG → ${outExt.toUpperCase()} • ${img.width}×${img.height}</div><div class="text-xs text-gray-500 mt-1">${formatSize(file.size)} → ${formatSize(blob.size)}</div></div><button onclick="downloadBlob(convertFromJpgFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateCfjBatch();
+    },outMime,cfjQuality/100);
+  };img.src=URL.createObjectURL(file);
+}
+function updateCfjBatch(){
+  const done=convertFromJpgFiles.filter(f=>f.status==='done');if(!done.length)return;
+  document.getElementById('cfjSummary').classList.remove('hidden');
+  document.getElementById('cfjSummary').innerHTML=`<div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">✅</div><span class="text-sm font-bold">${done.length} converted</span></div><div class="flex gap-2">${done.length>1?`<button onclick="convertFromJpgFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="convertFromJpgFiles=[];document.getElementById('cfjResults').innerHTML='';document.getElementById('cfjSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== PNG TO JPG ====================
+let pngFiles=[], pngQuality=92, pngBgColor='#ffffff';
+function renderConvert(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-purple-100 text-purple-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🔃 PNG to JPG</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">PNG to <span class="gradient-text">JPG</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Convert PNG images to JPG format with quality control and background color settings.</p>
+    </div>
+    ${createDropZone('pngDrop','image/png')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Settings</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="pngQVal" class="text-purple-600 font-bold">${pngQuality}%</span></label>
+          <input type="range" min="1" max="100" value="${pngQuality}" class="w-full" oninput="pngQuality=+this.value;document.getElementById('pngQVal').textContent=this.value+'%'"/>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+          <div class="flex items-center gap-3">
+            <input type="color" value="${pngBgColor}" class="w-10 h-10 rounded-lg border cursor-pointer" onchange="pngBgColor=this.value"/>
+            <div class="flex gap-1">${['#ffffff','#000000','#f3f4f6','#fef3c7','#dbeafe','#fce7f3'].map(c=>`<button onclick="pngBgColor='${c}'" class="w-8 h-8 rounded-lg border-2 hover:scale-110 transition" style="background:${c}"></button>`).join('')}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="pngPending"></div>
+    <div id="pngSummary" class="hidden mt-4"></div>
+    <div id="pngResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function initConvert(){pngFiles=[];convertPending=[];pngQuality=92;pngBgColor='#ffffff';setupDropZone('pngDrop',files=>{[...files].filter(f=>f.type==='image/png').forEach(f=>convertPending.push(f));renderPngPending()})}
+function pngPendingRemove(i){convertPending.splice(i,1);renderPngPending()}
+function renderPngPending(){document.getElementById('pngPending').innerHTML=renderGenericPending(convertPending,'Convert','startConvert()','convertPending=[];renderPngPending()','pngPendingRemove','pngDrop','bg-purple-100 text-purple-700')}
+function startConvert(){if(!convertPending.length)return;const f=[...convertPending];convertPending=[];renderPngPending();f.forEach(processPng)}
+function processPng(file){
+  const id=generateId();pngFiles.push({id,file,status:'processing'});
+  document.getElementById('pngResults').insertAdjacentHTML('beforeend',`<div id="png_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Converting...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');
+    ctx.fillStyle=pngBgColor;ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0);
+    c.toBlob(blob=>{
+      const item=pngFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const nn=file.name.replace(/\.png$/i,'.jpg');item.newName=nn;const pu=URL.createObjectURL(blob);
+      const sv=((1-blob.size/file.size)*100).toFixed(1);
+      document.getElementById(`png_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">${img.width}×${img.height} • ${formatSize(file.size)} → ${formatSize(blob.size)} <span class="${sv>0?'text-green-600':'text-amber-600'}">${sv>0?'↓':'↑'}${Math.abs(sv)}%</span></div></div><button onclick="downloadBlob(pngFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updatePngBatch();
+    },'image/jpeg',pngQuality/100);
+  };img.src=URL.createObjectURL(file);
+}
+function updatePngBatch(){
+  const done=pngFiles.filter(f=>f.status==='done');if(!done.length)return;
+  document.getElementById('pngSummary').classList.remove('hidden');
+  document.getElementById('pngSummary').innerHTML=`<div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">✅</div><span class="text-sm font-bold">${done.length} converted</span></div><div class="flex gap-2">${done.length>1?`<button onclick="pngFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="pngFiles=[];document.getElementById('pngResults').innerHTML='';document.getElementById('pngSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== COMPRESS ====================
+let compressFiles=[], cmpQuality=80, cmpFormat='auto';
+function renderCompress(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🗜️ Image Compressor</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Compress <span class="gradient-text">Images</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Reduce file size of your JPG, PNG, or WebP images while maintaining quality.</p>
+    </div>
+    ${createDropZone('cmpDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Compression Settings</h3>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="cmpQVal" class="text-purple-600 font-bold">${cmpQuality}%</span></label>
+          <input type="range" min="1" max="100" value="${cmpQuality}" class="w-full" oninput="cmpQuality=+this.value;document.getElementById('cmpQVal').textContent=this.value+'%'"/>
+          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Smallest</span><span>Best quality</span></div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Output Format</label>
+          <select class="w-full px-3 py-2.5 border rounded-xl text-sm outline-none" onchange="cmpFormat=this.value">
+            <option value="auto">Auto (keep original)</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="cmpPending"></div>
+    <div id="cmpSummary" class="hidden mt-4"></div>
+    <div id="cmpResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function initCompress(){compressFiles=[];compressPending=[];cmpQuality=80;cmpFormat='auto';setupDropZone('cmpDrop',files=>{[...files].filter(f=>f.type.startsWith('image/')).forEach(f=>compressPending.push(f));renderCmpPending()})}
+function cmpPendingRemove(i){compressPending.splice(i,1);renderCmpPending()}
+function renderCmpPending(){document.getElementById('cmpPending').innerHTML=renderGenericPending(compressPending,'Compress','startCompress()','compressPending=[];renderCmpPending()','cmpPendingRemove','cmpDrop','bg-orange-100 text-orange-700')}
+function startCompress(){if(!compressPending.length)return;const f=[...compressPending];compressPending=[];renderCmpPending();f.forEach(processCompress)}
+function processCompress(file){
+  const id=generateId();compressFiles.push({id,file,status:'processing'});
+  document.getElementById('cmpResults').insertAdjacentHTML('beforeend',`<div id="cmp_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Compressing...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const ctx=c.getContext('2d');
+    const outType=cmpFormat==='auto'?(file.type==='image/png'?'image/png':file.type==='image/webp'?'image/webp':'image/jpeg'):cmpFormat;
+    if(outType==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height)}
+    ctx.drawImage(img,0,0);
+    c.toBlob(blob=>{
+      const item=compressFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const ext=outType==='image/png'?'png':outType==='image/webp'?'webp':'jpg';
+      const nn=file.name.replace(/\.[^.]+$/,'_compressed.'+ext);item.newName=nn;const pu=URL.createObjectURL(blob);
+      const sv=((1-blob.size/file.size)*100).toFixed(1);
+      document.getElementById(`cmp_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">${img.width}×${img.height}</div><div class="flex items-center gap-2 mt-1"><span class="text-xs text-gray-500">${formatSize(file.size)} → ${formatSize(blob.size)}</span><span class="text-xs font-bold px-2 py-0.5 rounded-full ${sv>0?'bg-green-100 text-green-700':'bg-amber-100 text-amber-700'}">${sv>0?'↓':'↑'}${Math.abs(sv)}%</span></div></div><button onclick="downloadBlob(compressFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateCmpBatch();
+    },outType,cmpQuality/100);
+  };img.src=URL.createObjectURL(file);
+}
+function updateCmpBatch(){
+  const done=compressFiles.filter(f=>f.status==='done');if(!done.length)return;
+  const origT=done.reduce((a,f)=>a+f.file.size,0),newT=done.reduce((a,f)=>a+f.blob.size,0);
+  const svT=((1-newT/origT)*100).toFixed(1);
+  document.getElementById('cmpSummary').classList.remove('hidden');
+  document.getElementById('cmpSummary').innerHTML=`<div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-2xl border border-orange-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">✅</div><div class="text-sm"><span class="font-bold">${done.length} compressed</span> <span class="text-gray-500">• Saved ${svT}% (${formatSize(origT-newT)})</span></div></div><div class="flex gap-2">${done.length>1?`<button onclick="compressFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="compressFiles=[];document.getElementById('cmpResults').innerHTML='';document.getElementById('cmpSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== RESIZE ====================
+let resizeFiles=[], rsMode='pixels', rsW=800, rsH=600, rsPercent=50, rsLock=true, rsQuality=92, rsFormat='auto';
+const RS_PRESETS=[
+  {n:'Instagram Post',w:1080,h:1080},{n:'Instagram Story',w:1080,h:1920},{n:'Facebook Cover',w:820,h:312},
+  {n:'Twitter Header',w:1500,h:500},{n:'YouTube Thumb',w:1280,h:720},{n:'LinkedIn Banner',w:1584,h:396},
+  {n:'HD 720p',w:1280,h:720},{n:'Full HD',w:1920,h:1080},{n:'4K',w:3840,h:2160},
+  {n:'Icon 64',w:64,h:64},{n:'Icon 128',w:128,h:128},{n:'Icon 512',w:512,h:512},
+];
+function renderResize(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-violet-100 text-violet-700 text-sm font-medium px-4 py-2 rounded-full mb-4">📐 Image Resizer</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Resize <span class="gradient-text">Images</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Resize JPG, PNG, SVG or GIF by defining new height and width pixels. Change image dimensions in bulk.</p>
+    </div>
+    ${createDropZone('rsDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp,image/svg+xml')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Resize Settings</h3>
+      <div class="flex gap-2 mb-4">
+        <button onclick="setRsMode('pixels')" id="rsm_px" class="flex-1 py-2 rounded-lg text-sm font-medium transition ${rsMode==='pixels'?'gradient-bg text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}">📐 By Pixels</button>
+        <button onclick="setRsMode('percent')" id="rsm_pc" class="flex-1 py-2 rounded-lg text-sm font-medium transition ${rsMode==='percent'?'gradient-bg text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}">📊 By Percentage</button>
+        <button onclick="setRsMode('preset')" id="rsm_pr" class="flex-1 py-2 rounded-lg text-sm font-medium transition ${rsMode==='preset'?'gradient-bg text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}">🖼️ Presets</button>
+      </div>
+      <div id="rsModePanel">
+        ${rsMode==='pixels'?renderRsPixels():rsMode==='percent'?renderRsPercent():renderRsPresets()}
+      </div>
+    </div>
+    <div id="rsPending"></div>
+    <div id="rsSummary" class="hidden mt-4"></div>
+    <div id="rsResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function renderRsPixels(){
+  return `<div class="grid grid-cols-2 gap-4">
+    <div><label class="block text-sm font-medium text-gray-700 mb-1">Width (px)</label><input type="number" id="rsWIn" value="${rsW}" min="1" max="10000" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" oninput="rsW=+this.value"/></div>
+    <div><label class="block text-sm font-medium text-gray-700 mb-1">Height (px)</label><input type="number" id="rsHIn" value="${rsH}" min="1" max="10000" class="w-full px-3 py-2 border rounded-lg text-sm outline-none" oninput="rsH=+this.value"/></div>
+  </div>`;
+}
+function renderRsPercent(){
+  return `<div>
+    <label class="block text-sm font-medium text-gray-700 mb-2">Scale: <span id="rsPVal" class="text-purple-600 font-bold">${rsPercent}%</span></label>
+    <input type="range" min="1" max="400" value="${rsPercent}" class="w-full" oninput="rsPercent=+this.value;document.getElementById('rsPVal').textContent=this.value+'%'"/>
+    <div class="flex gap-2 mt-3">${[25,50,75,100,150,200].map(p=>`<button onclick="rsPercent=${p};document.querySelector('#rsModePanel input[type=range]').value=${p};document.getElementById('rsPVal').textContent='${p}%'" class="flex-1 py-2 rounded-lg text-xs font-medium border hover:bg-purple-50 hover:border-purple-300 transition">${p}%</button>`).join('')}</div>
+  </div>`;
+}
+function renderRsPresets(){
+  return `<div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+    ${RS_PRESETS.map(p=>`<button onclick="rsW=${p.w};rsH=${p.h};rsMode='pixels'" class="p-3 rounded-xl border text-left hover:bg-purple-50 hover:border-purple-300 transition"><div class="text-sm font-medium">${p.n}</div><div class="text-xs text-gray-500">${p.w}×${p.h}</div></button>`).join('')}
+  </div>`;
+}
+function setRsMode(m){rsMode=m;['pixels','percent','preset'].forEach(v=>{const b=document.getElementById('rsm_'+(v==='pixels'?'px':v==='percent'?'pc':'pr'));if(b)b.className=`flex-1 py-2 rounded-lg text-sm font-medium transition ${rsMode===v?'gradient-bg text-white':'bg-gray-100 text-gray-600 hover:bg-gray-200'}`});document.getElementById('rsModePanel').innerHTML=rsMode==='pixels'?renderRsPixels():rsMode==='percent'?renderRsPercent():renderRsPresets()}
+function initResize(){resizeFiles=[];resizePending=[];rsMode='pixels';rsW=800;rsH=600;rsPercent=50;setupDropZone('rsDrop',files=>{[...files].filter(f=>f.type.startsWith('image/')).forEach(f=>resizePending.push(f));renderRsPending()})}
+function rsPendingRemove(i){resizePending.splice(i,1);renderRsPending()}
+function renderRsPending(){document.getElementById('rsPending').innerHTML=renderGenericPending(resizePending,'Resize','startResize()','resizePending=[];renderRsPending()','rsPendingRemove','rsDrop','bg-violet-100 text-violet-700')}
+function startResize(){if(!resizePending.length)return;const f=[...resizePending];resizePending=[];renderRsPending();f.forEach(processResize)}
+function processResize(file){
+  const id=generateId();resizeFiles.push({id,file,status:'processing'});
+  document.getElementById('rsResults').insertAdjacentHTML('beforeend',`<div id="rs_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Resizing...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    let nw,nh;
+    if(rsMode==='percent'){nw=Math.round(img.width*rsPercent/100);nh=Math.round(img.height*rsPercent/100)}
+    else{nw=rsW;nh=rsH}
+    const c=document.createElement('canvas');c.width=nw;c.height=nh;const ctx=c.getContext('2d');
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    const outType=file.type==='image/png'?'image/png':file.type==='image/webp'?'image/webp':'image/jpeg';
+    if(outType==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,nw,nh)}
+    ctx.drawImage(img,0,0,nw,nh);
+    c.toBlob(blob=>{
+      const item=resizeFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const ext=outType==='image/png'?'png':outType==='image/webp'?'webp':'jpg';
+      const nn=file.name.replace(/\.[^.]+$/,'_resized.'+ext);item.newName=nn;const pu=URL.createObjectURL(blob);
+      document.getElementById(`rs_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">${img.width}×${img.height} → ${nw}×${nh}</div><div class="text-xs text-gray-500 mt-1">${formatSize(file.size)} → ${formatSize(blob.size)}</div></div><button onclick="downloadBlob(resizeFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateRsBatch();
+    },outType,0.92);
+  };img.src=URL.createObjectURL(file);
+}
+function updateRsBatch(){
+  const done=resizeFiles.filter(f=>f.status==='done');if(!done.length)return;
+  document.getElementById('rsSummary').classList.remove('hidden');
+  document.getElementById('rsSummary').innerHTML=`<div class="bg-gradient-to-r from-violet-50 to-purple-50 rounded-2xl border border-violet-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center">✅</div><span class="text-sm font-bold">${done.length} resized</span></div><div class="flex gap-2">${done.length>1?`<button onclick="resizeFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="resizeFiles=[];document.getElementById('rsResults').innerHTML='';document.getElementById('rsSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== CROP ====================
+let cropImg=null, cropFile=null, cropX=0, cropY=0, cropW=200, cropH=200, cropAspect='free', cropDragging=false, cropHandle='', cropStartX=0, cropStartY=0;
+function renderCrop(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-pink-100 text-pink-700 text-sm font-medium px-4 py-2 rounded-full mb-4">✂️ Image Cropper</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Crop <span class="gradient-text">Images</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Crop JPG, PNG, or GIFs with ease. Choose pixels to define your rectangle or use our visual editor.</p>
+    </div>
+    ${createDropZone('cropDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp',false)}
+    <div id="cropEditor" class="hidden mt-6">
+      <div class="bg-white rounded-2xl border p-6">
+        <div class="flex flex-wrap gap-2 mb-4">
+          <label class="text-sm font-medium text-gray-700 mr-2 self-center">Aspect Ratio:</label>
+          ${['free','1:1','4:3','16:9','3:2','2:3'].map(a=>`<button onclick="setCropAspect('${a}')" id="ca_${a.replace(':','')}" class="px-3 py-1.5 rounded-lg text-xs font-medium border transition ${cropAspect===a?'bg-purple-100 border-purple-300 text-purple-700':'hover:bg-gray-50'}">${a==='free'?'Free':a}</button>`).join('')}
+        </div>
+        <div class="grid md:grid-cols-4 gap-3 mb-4">
+          <div><label class="text-xs text-gray-600">X</label><input type="number" id="cropXIn" value="${cropX}" class="w-full px-2 py-1.5 border rounded-lg text-sm outline-none" oninput="cropX=+this.value;drawCropOverlay()"/></div>
+          <div><label class="text-xs text-gray-600">Y</label><input type="number" id="cropYIn" value="${cropY}" class="w-full px-2 py-1.5 border rounded-lg text-sm outline-none" oninput="cropY=+this.value;drawCropOverlay()"/></div>
+          <div><label class="text-xs text-gray-600">Width</label><input type="number" id="cropWIn" value="${cropW}" class="w-full px-2 py-1.5 border rounded-lg text-sm outline-none" oninput="cropW=+this.value;drawCropOverlay()"/></div>
+          <div><label class="text-xs text-gray-600">Height</label><input type="number" id="cropHIn" value="${cropH}" class="w-full px-2 py-1.5 border rounded-lg text-sm outline-none" oninput="cropH=+this.value;drawCropOverlay()"/></div>
+        </div>
+        <div class="relative inline-block" id="cropContainer">
+          <canvas id="cropCanvas" class="max-w-full rounded-xl border cursor-crosshair"></canvas>
+          <div id="cropOverlay" class="crop-overlay" style="display:none"></div>
+        </div>
+        <div class="flex gap-3 mt-4">
+          <button onclick="executeCrop()" class="flex-1 gradient-bg text-white font-bold py-3 rounded-xl hover:opacity-90 transition">✂️ Crop Image</button>
+          <button onclick="resetCrop()" class="px-5 py-3 rounded-xl border hover:bg-gray-50 transition font-medium text-gray-700">↺ Reset</button>
+        </div>
+      </div>
+    </div>
+    <div id="cropResult" class="mt-6"></div>
+  </div>`;
+}
+function setCropAspect(a){cropAspect=a;['free','1:1','4:3','16:9','3:2','2:3'].forEach(v=>{const b=document.getElementById('ca_'+v.replace(':',''));if(b)b.className=`px-3 py-1.5 rounded-lg text-xs font-medium border transition ${cropAspect===v?'bg-purple-100 border-purple-300 text-purple-700':'hover:bg-gray-50'}`});if(a!=='free'&&cropImg){const[rw,rh]=a.split(':').map(Number);cropH=Math.round(cropW*rh/rw);updateCropInputs();drawCropOverlay()}}
+function initCrop(){cropImg=null;cropFile=null;cropX=0;cropY=0;cropW=200;cropH=200;cropAspect='free';
+  setupDropZone('cropDrop',files=>{const f=[...files].find(f=>f.type.startsWith('image/'));if(!f)return;cropFile=f;
+    const img=new Image();img.onload=()=>{cropImg=img;
+      const canvas=document.getElementById('cropCanvas');const maxW=canvas.parentElement.clientWidth-2;
+      const scale=Math.min(maxW/img.width,600/img.height,1);
+      canvas.width=img.width*scale;canvas.height=img.height*scale;
+      const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      cropW=Math.round(canvas.width*0.6);cropH=Math.round(canvas.height*0.6);
+      cropX=Math.round((canvas.width-cropW)/2);cropY=Math.round((canvas.height-cropH)/2);
+      updateCropInputs();
+      document.getElementById('cropEditor').classList.remove('hidden');
+      drawCropOverlay();
+      setupCropDrag(canvas,scale);
+    };img.src=URL.createObjectURL(f)});
+}
+function updateCropInputs(){const xi=document.getElementById('cropXIn'),yi=document.getElementById('cropYIn'),wi=document.getElementById('cropWIn'),hi=document.getElementById('cropHIn');if(xi)xi.value=cropX;if(yi)yi.value=cropY;if(wi)wi.value=cropW;if(hi)hi.value=cropH}
+function drawCropOverlay(){
+  const o=document.getElementById('cropOverlay');if(!o)return;
+  o.style.display='block';o.style.left=cropX+'px';o.style.top=cropY+'px';o.style.width=cropW+'px';o.style.height=cropH+'px';
+  o.innerHTML=`<div class="crop-handle" style="top:-6px;left:-6px;cursor:nw-resize"></div><div class="crop-handle" style="top:-6px;right:-6px;cursor:ne-resize"></div><div class="crop-handle" style="bottom:-6px;left:-6px;cursor:sw-resize"></div><div class="crop-handle" style="bottom:-6px;right:-6px;cursor:se-resize"></div><div class="absolute inset-0 flex items-center justify-center text-white text-xs font-medium bg-black/20 rounded">${cropW}×${cropH}</div>`;
+}
+function setupCropDrag(canvas, scale){
+  const container=document.getElementById('cropContainer');
+  container.onmousedown=e=>{const r=canvas.getBoundingClientRect();const mx=e.clientX-r.left,my=e.clientY-r.top;
+    if(mx>=cropX-8&&mx<=cropX+8&&my>=cropY-8&&my<=cropY+8){cropHandle='tl';cropDragging=true}
+    else if(mx>=cropX+cropW-8&&mx<=cropX+cropW+8&&my>=cropY-8&&my<=cropY+8){cropHandle='tr';cropDragging=true}
+    else if(mx>=cropX-8&&mx<=cropX+8&&my>=cropY+cropH-8&&my<=cropY+cropH+8){cropHandle='bl';cropDragging=true}
+    else if(mx>=cropX+cropW-8&&mx<=cropX+cropW+8&&my>=cropY+cropH-8&&my<=cropY+cropH+8){cropHandle='br';cropDragging=true}
+    else if(mx>=cropX&&mx<=cropX+cropW&&my>=cropY&&my<=cropY+cropH){cropHandle='move';cropDragging=true}
+    else{cropX=mx;cropY=my;cropW=10;cropH=10;cropHandle='br';cropDragging=true}
+    cropStartX=e.clientX;cropStartY=e.clientY;e.preventDefault()};
+  document.onmousemove=e=>{if(!cropDragging)return;const dx=e.clientX-cropStartX,dy=e.clientY-cropStartY;cropStartX=e.clientX;cropStartY=e.clientY;
+    if(cropHandle==='move'){cropX=Math.max(0,Math.min(canvas.width-cropW,cropX+dx));cropY=Math.max(0,Math.min(canvas.height-cropH,cropY+dy))}
+    else if(cropHandle==='br'){cropW=Math.max(20,cropW+dx);cropH=Math.max(20,cropH+dy);if(cropAspect!=='free'){const[rw,rh]=cropAspect.split(':').map(Number);cropH=Math.round(cropW*rh/rw)}}
+    else if(cropHandle==='tl'){cropX+=dx;cropY+=dy;cropW-=dx;cropH-=dy;if(cropW<20){cropW=20}if(cropH<20){cropH=20}}
+    else if(cropHandle==='tr'){cropW+=dx;cropY+=dy;cropH-=dy;if(cropW<20)cropW=20;if(cropH<20)cropH=20}
+    else if(cropHandle==='bl'){cropX+=dx;cropW-=dx;cropH+=dy;if(cropW<20)cropW=20;if(cropH<20)cropH=20}
+    updateCropInputs();drawCropOverlay()};
+  document.onmouseup=()=>{cropDragging=false};
+}
+function resetCrop(){if(!cropImg)return;const canvas=document.getElementById('cropCanvas');cropW=Math.round(canvas.width*0.6);cropH=Math.round(canvas.height*0.6);cropX=Math.round((canvas.width-cropW)/2);cropY=Math.round((canvas.height-cropH)/2);cropAspect='free';updateCropInputs();drawCropOverlay()}
+function executeCrop(){
+  if(!cropImg)return;
+  const canvas=document.getElementById('cropCanvas');
+  const scaleX=cropImg.width/canvas.width, scaleY=cropImg.height/canvas.height;
+  const sx=Math.round(cropX*scaleX),sy=Math.round(cropY*scaleY),sw=Math.round(cropW*scaleX),sh=Math.round(cropH*scaleY);
+  const c=document.createElement('canvas');c.width=sw;c.height=sh;const ctx=c.getContext('2d');
+  const outType=cropFile.type==='image/png'?'image/png':'image/jpeg';
+  if(outType==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,sw,sh)}
+  ctx.drawImage(cropImg,sx,sy,sw,sh,0,0,sw,sh);
+  c.toBlob(blob=>{
+    const ext=outType==='image/png'?'png':'jpg';
+    const nn=cropFile.name.replace(/\.[^.]+$/,'_cropped.'+ext);
+    const pu=URL.createObjectURL(blob);
+    document.getElementById('cropResult').innerHTML=`
+    <div class="bg-white rounded-2xl border p-6 fade-in">
+      <h3 class="font-semibold text-gray-900 mb-3">✅ Cropped Result</h3>
+      <div class="border rounded-xl overflow-hidden mb-4 inline-block"><img src="${pu}" class="max-w-full max-h-96"/></div>
+      <div class="text-sm text-gray-500 mb-4">${sw}×${sh} pixels • ${formatSize(blob.size)}</div>
+      <button onclick="downloadBlob(document._cropBlob,'${nn}')" class="gradient-bg text-white font-bold px-8 py-3 rounded-xl hover:opacity-90 transition">📥 Download Cropped Image</button>
+    </div>`;
+    document._cropBlob=blob;
+  },outType,0.92);
+}
+
+// ==================== ROTATE ====================
+let rotateFiles=[], rotAngle=90, rotFlipH=false, rotFlipV=false;
+function renderRotate(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-cyan-100 text-cyan-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🔁 Image Rotator</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Rotate <span class="gradient-text">Images</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Rotate many images JPG, PNG or GIF at same time. Choose to rotate only landscape or portrait images!</p>
+    </div>
+    ${createDropZone('rotDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Rotation Settings</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+        ${[{v:90,l:'90° Right',i:'↱'},{v:180,l:'180°',i:'↓'},{v:270,l:'90° Left',i:'↰'},{v:-1,l:'Custom',i:'🔄'}].map(r=>`
+        <button onclick="setRotAngle(${r.v})" id="rot_${r.v}" class="p-4 rounded-xl border-2 text-center transition ${rotAngle===r.v?'border-cyan-500 bg-cyan-50':'border-gray-200 hover:bg-gray-50'}">
+          <div class="text-2xl mb-1">${r.i}</div>
+          <div class="text-sm font-medium">${r.l}</div>
+        </button>`).join('')}
+      </div>
+      ${rotAngle===-1?`<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">Custom Angle: <span id="rotAVal" class="text-purple-600 font-bold">${rotAngle}°</span></label><input type="range" min="0" max="359" value="45" class="w-full" oninput="rotAngle=-1;document.getElementById('rotAVal').textContent=this.value+'°';document._customAngle=+this.value"/></div>`:''}
+      <div class="flex gap-3">
+        <button onclick="rotFlipH=!rotFlipH;this.classList.toggle('bg-cyan-50');this.classList.toggle('border-cyan-500')" class="flex-1 p-3 rounded-xl border-2 text-center transition ${rotFlipH?'bg-cyan-50 border-cyan-500':'border-gray-200'}">
+          <div class="text-lg">↔️</div><div class="text-xs font-medium">Flip Horizontal</div>
+        </button>
+        <button onclick="rotFlipV=!rotFlipV;this.classList.toggle('bg-cyan-50');this.classList.toggle('border-cyan-500')" class="flex-1 p-3 rounded-xl border-2 text-center transition ${rotFlipV?'bg-cyan-50 border-cyan-500':'border-gray-200'}">
+          <div class="text-lg">↕️</div><div class="text-xs font-medium">Flip Vertical</div>
+        </button>
+      </div>
+    </div>
+    <div id="rotPending"></div>
+    <div id="rotSummary" class="hidden mt-4"></div>
+    <div id="rotResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function setRotAngle(v){rotAngle=v;[90,180,270,-1].forEach(a=>{const b=document.getElementById('rot_'+a);if(b){b.className=`p-4 rounded-xl border-2 text-center transition ${rotAngle===a?'border-cyan-500 bg-cyan-50':'border-gray-200 hover:bg-gray-50'}`}});if(v===-1){document._customAngle=45;const p=document.getElementById('rot_-1').parentElement;const existing=p.parentElement.querySelector('.custom-angle-slider');if(!existing){p.insertAdjacentHTML('afterend',`<div class="custom-angle-slider mb-4 mt-4"><label class="block text-sm font-medium text-gray-700 mb-2">Custom Angle: <span id="rotAVal" class="text-purple-600 font-bold">45°</span></label><input type="range" min="0" max="359" value="45" class="w-full" oninput="document.getElementById('rotAVal').textContent=this.value+'°';document._customAngle=+this.value"/></div>`)}}else{const cs=document.querySelector('.custom-angle-slider');if(cs)cs.remove()}}
+function initRotate(){rotateFiles=[];rotatePending=[];rotAngle=90;rotFlipH=false;rotFlipV=false;document._customAngle=45;
+  setupDropZone('rotDrop',files=>{[...files].filter(f=>f.type.startsWith('image/')).forEach(f=>rotatePending.push(f));renderRotPending()})}
+function rotPendingRemove(i){rotatePending.splice(i,1);renderRotPending()}
+function renderRotPending(){document.getElementById('rotPending').innerHTML=renderGenericPending(rotatePending,'Rotate','startRotate()','rotatePending=[];renderRotPending()','rotPendingRemove','rotDrop','bg-cyan-100 text-cyan-700')}
+function startRotate(){if(!rotatePending.length)return;const f=[...rotatePending];rotatePending=[];renderRotPending();f.forEach(processRotate)}
+function processRotate(file){
+  const id=generateId();rotateFiles.push({id,file,status:'processing'});
+  const angle=rotAngle===-1?(document._customAngle||45):rotAngle;
+  document.getElementById('rotResults').insertAdjacentHTML('beforeend',`<div id="rot_r_${id}" class="bg-white rounded-2xl border p-4 fade-in"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Rotating ${angle}°...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    const rad=angle*Math.PI/180;
+    const sin=Math.abs(Math.sin(rad)),cos=Math.abs(Math.cos(rad));
+    const nw=Math.round(img.width*cos+img.height*sin),nh=Math.round(img.width*sin+img.height*cos);
+    const c=document.createElement('canvas');c.width=nw;c.height=nh;const ctx=c.getContext('2d');
+    const outType=file.type==='image/png'?'image/png':'image/jpeg';
+    if(outType==='image/jpeg'){ctx.fillStyle='#fff';ctx.fillRect(0,0,nw,nh)}
+    ctx.translate(nw/2,nh/2);ctx.rotate(rad);
+    if(rotFlipH)ctx.scale(-1,1);if(rotFlipV)ctx.scale(1,-1);
+    ctx.drawImage(img,-img.width/2,-img.height/2);
+    c.toBlob(blob=>{
+      const item=rotateFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const ext=outType==='image/png'?'png':'jpg';
+      const nn=file.name.replace(/\.[^.]+$/,'_rotated.'+ext);item.newName=nn;const pu=URL.createObjectURL(blob);
+      let info=`Rotated ${angle}°`;if(rotFlipH)info+=' + Flip H';if(rotFlipV)info+=' + Flip V';
+      document.getElementById(`rot_r_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">${info} • ${nw}×${nh}</div></div><button onclick="downloadBlob(rotateFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateRotBatch();
+    },outType,0.92);
+  };img.src=URL.createObjectURL(file);
+}
+function updateRotBatch(){
+  const done=rotateFiles.filter(f=>f.status==='done');if(!done.length)return;
+  document.getElementById('rotSummary').classList.remove('hidden');
+  document.getElementById('rotSummary').innerHTML=`<div class="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-2xl border border-cyan-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center">✅</div><span class="text-sm font-bold">${done.length} rotated</span></div><div class="flex gap-2">${done.length>1?`<button onclick="rotateFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="rotateFiles=[];document.getElementById('rotResults').innerHTML='';document.getElementById('rotSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
+
+// ==================== PHOTO EDITOR ====================
+let editorImg=null, editorFile=null, edBrightness=100, edContrast=100, edSaturate=100, edBlur=0, edGrayscale=0, edSepia=0, edHueRotate=0, edInvert=0, edText='', edTextColor='#ffffff', edTextSize=32;
+function renderEditor(){
+  return `
+  <div class="fade-in max-w-5xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-fuchsia-100 text-fuchsia-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🎨 Photo Editor</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Photo <span class="gradient-text">Editor</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Spice up your pictures with text, effects, frames or stickers. Simple editing tools for your image needs.</p>
+    </div>
+    ${createDropZone('editorDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp',false)}
+    <div id="editorPanel" class="hidden mt-6">
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+          <div class="bg-white rounded-2xl border p-4">
+            <canvas id="editorCanvas" class="editor-canvas w-full"></canvas>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button onclick="exportEditor()" class="flex-1 gradient-bg text-white font-bold py-3 rounded-xl hover:opacity-90 transition">📥 Download Edited Image</button>
+            <button onclick="resetEditorFilters()" class="px-5 py-3 rounded-xl border hover:bg-gray-50 transition text-gray-700 font-medium">↺ Reset</button>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="bg-white rounded-2xl border p-4">
+            <h4 class="font-semibold text-gray-900 mb-3 text-sm">🎛️ Adjustments</h4>
+            <div class="space-y-3">
+              ${[{id:'edBright',l:'Brightness',v:'edBrightness',min:0,max:200,def:100},{id:'edContr',l:'Contrast',v:'edContrast',min:0,max:200,def:100},{id:'edSat',l:'Saturation',v:'edSaturate',min:0,max:200,def:100},{id:'edBlr',l:'Blur',v:'edBlur',min:0,max:20,def:0},{id:'edGray',l:'Grayscale',v:'edGrayscale',min:0,max:100,def:0},{id:'edSep',l:'Sepia',v:'edSepia',min:0,max:100,def:0},{id:'edHue',l:'Hue Rotate',v:'edHueRotate',min:0,max:360,def:0}].map(s=>`
+              <div>
+                <div class="flex justify-between text-xs text-gray-600 mb-1"><span>${s.l}</span><span id="${s.id}Val">${eval(s.v)}</span></div>
+                <input type="range" min="${s.min}" max="${s.max}" value="${eval(s.v)}" class="w-full" oninput="${s.v}=+this.value;document.getElementById('${s.id}Val').textContent=this.value;drawEditor()"/>
+              </div>`).join('')}
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border p-4">
+            <h4 class="font-semibold text-gray-900 mb-3 text-sm">✨ Presets</h4>
+            <div class="grid grid-cols-3 gap-2">
+              ${[{n:'Normal',b:100,c:100,s:100,g:0,sp:0},{n:'B&W',b:100,c:110,s:0,g:100,sp:0},{n:'Vintage',b:110,c:90,s:80,g:0,sp:60},{n:'Warm',b:105,c:105,s:120,g:0,sp:20},{n:'Cool',b:100,c:105,s:90,g:0,sp:0},{n:'Vivid',b:105,c:120,s:150,g:0,sp:0}].map(p=>`
+              <button onclick="edBrightness=${p.b};edContrast=${p.c};edSaturate=${p.s};edGrayscale=${p.g};edSepia=${p.sp};drawEditor();updateEditorSliders()" class="p-2 rounded-lg border text-xs font-medium hover:bg-purple-50 hover:border-purple-300 transition">${p.n}</button>`).join('')}
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border p-4">
+            <h4 class="font-semibold text-gray-900 mb-3 text-sm">📝 Add Text</h4>
+            <input type="text" placeholder="Enter text..." class="w-full px-3 py-2 border rounded-lg text-sm mb-2 outline-none" oninput="edText=this.value;drawEditor()"/>
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="text-xs text-gray-600">Color</label><input type="color" value="#ffffff" class="w-full h-8 rounded border cursor-pointer" onchange="edTextColor=this.value;drawEditor()"/></div>
+              <div><label class="text-xs text-gray-600">Size: <span id="edTSVal">${edTextSize}</span>px</label><input type="range" min="12" max="120" value="${edTextSize}" class="w-full" oninput="edTextSize=+this.value;document.getElementById('edTSVal').textContent=this.value;drawEditor()"/></div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div id="convertResults" class="mt-6 space-y-4"></div>
-    <div id="convertBatchBar" class="hidden mt-4"></div>
+    <div id="editorResult" class="mt-6"></div>
   </div>`;
 }
-
-function initConvert() {
-  convertFiles = [];
-  setupDropZone('convertDrop', files => {
-    const pngs = [...files].filter(f => f.type === 'image/png');
-    if(!pngs.length) { alert('Please select PNG files'); return; }
-    pngs.forEach(f => processConvert(f));
+function initEditor(){
+  editorImg=null;editorFile=null;resetEditorFilters();
+  setupDropZone('editorDrop',files=>{
+    const f=[...files].find(f=>f.type.startsWith('image/'));if(!f)return;editorFile=f;
+    const img=new Image();img.onload=()=>{editorImg=img;document.getElementById('editorPanel').classList.remove('hidden');drawEditor()};
+    img.src=URL.createObjectURL(f);
   });
 }
+function resetEditorFilters(){edBrightness=100;edContrast=100;edSaturate=100;edBlur=0;edGrayscale=0;edSepia=0;edHueRotate=0;edInvert=0;updateEditorSliders();if(editorImg)drawEditor()}
+function updateEditorSliders(){
+  const vals={edBright:edBrightness,edContr:edContrast,edSat:edSaturate,edBlr:edBlur,edGray:edGrayscale,edSep:edSepia,edHue:edHueRotate};
+  Object.entries(vals).forEach(([id,v])=>{const el=document.getElementById(id+'Val');if(el)el.textContent=v});
+}
+function drawEditor(){
+  if(!editorImg)return;
+  const canvas=document.getElementById('editorCanvas'),ctx=canvas.getContext('2d');
+  const scale=Math.min(canvas.parentElement.clientWidth/editorImg.width,600/editorImg.height,1);
+  canvas.width=editorImg.width*scale;canvas.height=editorImg.height*scale;
+  ctx.filter=`brightness(${edBrightness}%) contrast(${edContrast}%) saturate(${edSaturate}%) blur(${edBlur}px) grayscale(${edGrayscale}%) sepia(${edSepia}%) hue-rotate(${edHueRotate}deg)`;
+  ctx.drawImage(editorImg,0,0,canvas.width,canvas.height);
+  ctx.filter='none';
+  if(edText){
+    ctx.font=`bold ${edTextSize*scale}px Inter,sans-serif`;ctx.fillStyle=edTextColor;ctx.textAlign='center';
+    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=4;ctx.shadowOffsetX=2;ctx.shadowOffsetY=2;
+    ctx.fillText(edText,canvas.width/2,canvas.height/2);ctx.shadowColor='transparent';
+  }
+}
+function exportEditor(){
+  if(!editorImg)return;
+  const c=document.createElement('canvas');c.width=editorImg.width;c.height=editorImg.height;const ctx=c.getContext('2d');
+  ctx.filter=`brightness(${edBrightness}%) contrast(${edContrast}%) saturate(${edSaturate}%) blur(${edBlur}px) grayscale(${edGrayscale}%) sepia(${edSepia}%) hue-rotate(${edHueRotate}deg)`;
+  ctx.drawImage(editorImg,0,0);ctx.filter='none';
+  if(edText){ctx.font=`bold ${edTextSize}px Inter,sans-serif`;ctx.fillStyle=edTextColor;ctx.textAlign='center';ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=4;ctx.shadowOffsetX=2;ctx.shadowOffsetY=2;ctx.fillText(edText,editorImg.width/2,editorImg.height/2)}
+  c.toBlob(blob=>{
+    const nn=editorFile.name.replace(/\.[^.]+$/,'_edited.jpg');
+    downloadBlob(blob,nn);
+  },'image/jpeg',0.92);
+}
 
-function processConvert(file) {
-  const id = generateId();
-  const item = { id, file, status: 'processing' };
-  convertFiles.push(item);
-
-  const results = document.getElementById('convertResults');
-  results.insertAdjacentHTML('beforeend', `
-    <div id="card_${id}" class="bg-white rounded-2xl border p-4">
-      <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div>
-        <div class="flex-1">
-          <div class="font-medium text-sm text-gray-900">${file.name}</div>
-          <div class="text-xs text-gray-500">${formatSize(file.size)} • Converting...</div>
-        </div>
+// ==================== UPSCALE IMAGE ====================
+let upscaleFiles=[], upscaleScale=2;
+function renderUpscale(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-amber-100 text-amber-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🔍 Image Upscaler</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Upscale <span class="gradient-text">Images</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Enlarge your images with high resolution. Easily increase the size of your JPG and PNG images while maintaining visual quality.</p>
+    </div>
+    ${createDropZone('upscaleDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp')}
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">⚙️ Upscale Settings</h3>
+      <label class="block text-sm font-medium text-gray-700 mb-3">Scale Factor</label>
+      <div class="flex flex-wrap gap-3">
+        ${[{v:2,l:'2× Upscale',d:'Double size'},{v:3,l:'3× Upscale',d:'Triple size'},{v:4,l:'4× Upscale',d:'Quadruple size'},{v:1.5,l:'1.5× Upscale',d:'50% larger'},{v:6,l:'6× Upscale',d:'Six times'},{v:8,l:'8× Upscale',d:'Eight times'}].map(s=>`
+          <button onclick="setUpscaleScale(${s.v})" id="us_${s.v}" class="flex-1 min-w-[120px] p-4 rounded-xl border-2 text-left transition ${upscaleScale===s.v?'border-purple-500 bg-purple-50':'border-gray-200 hover:bg-gray-50'}">
+            <div class="text-lg font-bold ${upscaleScale===s.v?'text-purple-700':'text-gray-900'}">${s.l}</div>
+            <div class="text-xs text-gray-500">${s.d}</div>
+          </button>`).join('')}
       </div>
     </div>
-  `);
+    <div id="upsPending"></div>
+    <div id="upsSummary" class="hidden mt-4"></div>
+    <div id="upsResults" class="mt-6 space-y-4"></div>
+  </div>`;
+}
+function setUpscaleScale(v){
+  upscaleScale=v;
+  [1.5,2,3,4,6,8].forEach(s=>{const b=document.getElementById('us_'+s);if(b)b.className=`flex-1 min-w-[120px] p-4 rounded-xl border-2 text-left transition ${upscaleScale===s?'border-purple-500 bg-purple-50':'border-gray-200 hover:bg-gray-50'}`});
+}
+function initUpscale(){
+  upscaleFiles=[];upscalePending=[];upscaleScale=2;
+  setupDropZone('upscaleDrop',files=>{[...files].filter(f=>f.type.startsWith('image/')).forEach(f=>upscalePending.push(f));renderUpsPending()});
+}
+function upsPendingRemove(i){upscalePending.splice(i,1);renderUpsPending()}
+function renderUpsPending(){document.getElementById('upsPending').innerHTML=renderGenericPending(upscalePending,'Upscale','startUpscale()','upscalePending=[];renderUpsPending()','upsPendingRemove','upscaleDrop','bg-amber-100 text-amber-700')}
+function startUpscale(){if(!upscalePending.length)return;const f=[...upscalePending];upscalePending=[];renderUpsPending();f.forEach(processUpscale)}
+function processUpscale(file){
+  const id=generateId();upscaleFiles.push({id,file,status:'processing'});
+  document.getElementById('upsResults').insertAdjacentHTML('beforeend',`<div id="ups_${id}" class="bg-white rounded-2xl border p-4"><div class="flex items-center gap-4"><div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div><div class="flex-1"><div class="font-medium text-sm">${file.name}</div><div class="text-xs text-gray-500">Upscaling ${upscaleScale}×...</div></div></div></div>`);
+  const img=new Image();img.onload=()=>{
+    const nw=Math.round(img.width*upscaleScale),nh=Math.round(img.height*upscaleScale);
+    const c=document.createElement('canvas');c.width=nw;c.height=nh;const ctx=c.getContext('2d');
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
+    if(file.type!=='image/png'){ctx.fillStyle='#fff';ctx.fillRect(0,0,nw,nh)}
+    if(upscaleScale>2){
+      const tc=document.createElement('canvas');let tw=img.width,th=img.height;tc.width=tw;tc.height=th;
+      const tctx=tc.getContext('2d');tctx.drawImage(img,0,0);
+      while(tw<nw||th<nh){const sw=Math.min(tw*2,nw),sh=Math.min(th*2,nh);
+        const sc=document.createElement('canvas');sc.width=sw;sc.height=sh;const sctx=sc.getContext('2d');
+        sctx.imageSmoothingEnabled=true;sctx.imageSmoothingQuality='high';sctx.drawImage(tc,0,0,sw,sh);
+        tc.width=sw;tc.height=sh;tctx.drawImage(sc,0,0);tw=sw;th=sh}
+      ctx.drawImage(tc,0,0,nw,nh);
+    } else {ctx.drawImage(img,0,0,nw,nh)}
+    const outType=file.type==='image/png'?'image/png':'image/jpeg';
+    c.toBlob(blob=>{
+      const item=upscaleFiles.find(f=>f.id===id);item.blob=blob;item.status='done';
+      const ext=outType==='image/png'?'png':'jpg';
+      const nn=file.name.replace(/\.[^.]+$/,'_upscaled_'+upscaleScale+'x.'+ext);item.newName=nn;const pu=URL.createObjectURL(blob);
+      document.getElementById(`ups_${id}`).innerHTML=`<div class="flex items-start gap-4"><img src="${pu}" class="w-16 h-16 rounded-xl object-cover border"/><div class="flex-1 min-w-0"><div class="font-medium text-sm truncate">${nn}</div><div class="text-xs text-gray-500">${img.width}×${img.height} → ${nw}×${nh} (${upscaleScale}× upscale)</div><div class="text-xs text-gray-500">${formatSize(blob.size)}</div></div><button onclick="downloadBlob(upscaleFiles.find(f=>f.id==='${id}').blob,'${nn}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition">📥 Download</button></div>`;
+      updateUpsBatch();
+    },outType,0.95);
+  };img.src=URL.createObjectURL(file);
+}
+function updateUpsBatch(){
+  const done=upscaleFiles.filter(f=>f.status==='done');if(!done.length)return;
+  const s=document.getElementById('upsSummary');s.classList.remove('hidden');
+  s.innerHTML=`<div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200 p-4 flex items-center justify-between flex-wrap gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">✅</div><div class="text-sm font-bold">${done.length} upscaled</div></div><div class="flex gap-2">${done.length>1?`<button onclick="upscaleFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl">📥 Download All</button>`:''}<button onclick="upscaleFiles=[];document.getElementById('upsResults').innerHTML='';document.getElementById('upsSummary').classList.add('hidden')" class="bg-white text-gray-600 text-sm px-4 py-2.5 rounded-xl border">Clear</button></div></div>`;
+}
 
-  const img = new Image();
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = convertBgColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0);
-    canvas.toBlob(blob => {
-      item.blob = blob;
-      item.status = 'done';
-      const newName = file.name.replace(/\.png$/i, '.jpg');
-      const savings = ((1 - blob.size / file.size) * 100).toFixed(1);
-      const previewUrl = URL.createObjectURL(blob);
-      const origUrl = URL.createObjectURL(file);
-
-      document.getElementById(`card_${id}`).innerHTML = `
-        <div class="flex items-start gap-4">
+// ==================== HTML TO IMAGE ====================
+let htmlUrl='', htmlWidth=1280, htmlHeight=800;
+function renderHtmlToImage(){
+  return `
+  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 bg-red-100 text-red-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🌐 HTML to Image</div>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">HTML to <span class="gradient-text">Image</span></h1>
+      <p class="text-gray-600 max-w-xl mx-auto">Convert webpages in HTML to JPG or SVG. Copy and paste the URL of the page you want and convert it to an image with a click.</p>
+    </div>
+    <div class="bg-white rounded-2xl border p-6">
+      <h3 class="font-semibold text-gray-900 mb-4">🔗 Enter URL or HTML</h3>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
           <div class="flex gap-2">
-            <img src="${origUrl}" class="w-16 h-16 rounded-xl object-cover border" alt="Original"/>
-            <img src="${previewUrl}" class="w-16 h-16 rounded-xl object-cover border" alt="Converted"/>
+            <input type="url" id="htmlUrlInput" placeholder="https://example.com" class="flex-1 px-4 py-3 border rounded-xl text-sm outline-none focus:ring-2 focus:ring-purple-500" value="${htmlUrl}"/>
+            <button onclick="captureUrl()" class="gradient-bg text-white font-medium px-6 py-3 rounded-xl hover:opacity-90 transition">📸 Capture</button>
           </div>
-          <div class="flex-1 min-w-0">
-            <div class="font-medium text-sm text-gray-900 truncate">${newName}</div>
-            <div class="text-xs text-gray-500">${img.width}×${img.height} • ${formatSize(file.size)} → ${formatSize(blob.size)}</div>
-            <div class="text-xs font-medium mt-1 ${savings>0?'text-green-600':'text-orange-600'}">${savings>0?'↓':'↑'} ${Math.abs(savings)}% ${savings>0?'smaller':'larger'}</div>
-          </div>
-          <button onclick="downloadBlob(convertFiles.find(f=>f.id==='${id}').blob,'${newName}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition whitespace-nowrap">📥 Download</button>
-        </div>`;
-
-      updateConvertBatch();
-    }, 'image/jpeg', convertQuality / 100);
-  };
-  img.src = URL.createObjectURL(file);
-}
-
-function updateConvertBatch() {
-  const done = convertFiles.filter(f => f.status === 'done');
-  if(done.length < 2) { document.getElementById('convertBatchBar').classList.add('hidden'); return; }
-  const totalOrig = convertFiles.reduce((s, f) => s + f.file.size, 0);
-  const totalNew = done.reduce((s, f) => s + f.blob.size, 0);
-  const bar = document.getElementById('convertBatchBar');
-  bar.classList.remove('hidden');
-  bar.innerHTML = `
-    <div class="bg-white rounded-2xl border p-4 flex items-center justify-between flex-wrap gap-3">
-      <div class="text-sm text-gray-600"><span class="font-bold text-gray-900">${done.length} files</span> converted • ${formatSize(totalOrig)} → ${formatSize(totalNew)}</div>
-      <button onclick="done.forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.file.name.replace(/\\.png$/i,'.jpg')),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:opacity-90 transition">📥 Download All</button>
-    </div>`;
-}
-
-// ==================== COMPRESS IMAGE ====================
-let compressFiles = [];
-let compressQuality = 80;
-let compressFormat = 'auto';
-
-function renderCompress() {
-  return `
-  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-sm font-medium px-4 py-2 rounded-full mb-4">🗜️ Image Compressor</div>
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Compress <span class="gradient-text">Images</span></h1>
-      <p class="text-gray-600 max-w-xl mx-auto">Reduce image file sizes while maintaining quality. Supports JPG, PNG, and WebP output.</p>
-    </div>
-    ${createDropZone('compressDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp')}
-    <!-- Settings -->
-    <div class="bg-white rounded-2xl border p-6 mt-6">
-      <div class="grid md:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="compressQualityVal" class="text-purple-600 font-bold">${compressQuality}%</span></label>
-          <input type="range" min="1" max="100" value="${compressQuality}" class="w-full" oninput="compressQuality=+this.value;document.getElementById('compressQualityVal').textContent=this.value+'%'"/>
-          <div class="flex justify-between text-xs text-gray-400 mt-1"><span>Maximum Compression</span><span>Maximum Quality</span></div>
         </div>
+        <div class="text-center text-sm text-gray-400 font-medium">— OR —</div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Output Format</label>
-          <select onchange="compressFormat=this.value" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-purple-500 outline-none bg-white text-sm">
-            <option value="auto">Auto (keep original)</option>
-            <option value="image/jpeg">JPEG</option>
-            <option value="image/png">PNG</option>
-            <option value="image/webp">WebP</option>
-          </select>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Paste HTML Code</label>
+          <textarea id="htmlCodeInput" placeholder="<div style='padding:20px; background:linear-gradient(135deg,#7c3aed,#ec4899); color:white; font-size:24px; border-radius:12px;'>Hello World!</div>" class="w-full px-4 py-3 border rounded-xl text-sm outline-none font-mono h-32 focus:ring-2 focus:ring-purple-500"></textarea>
+          <button onclick="captureHtml()" class="w-full gradient-bg text-white font-medium py-3 rounded-xl mt-2 hover:opacity-90 transition">🖼️ Convert HTML to Image</button>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Width (px)</label><input type="number" id="htmlW" value="${htmlWidth}" class="w-full px-3 py-2 border rounded-lg text-sm outline-none"/></div>
+          <div><label class="block text-sm font-medium text-gray-700 mb-1">Height (px)</label><input type="number" id="htmlH" value="${htmlHeight}" class="w-full px-3 py-2 border rounded-lg text-sm outline-none"/></div>
         </div>
       </div>
     </div>
-    <div id="compressSummary" class="hidden mt-4"></div>
-    <div id="compressResults" class="mt-6 space-y-4"></div>
-    <div id="compressBatchBar" class="hidden mt-4"></div>
+    <div id="htmlResult" class="mt-6"></div>
+    <div class="bg-white rounded-2xl border p-6 mt-6">
+      <h3 class="font-semibold text-gray-900 mb-4">💡 How it works</h3>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-50 rounded-xl p-4">
+          <h4 class="font-medium text-blue-900 mb-2">🔗 URL Capture</h4>
+          <p class="text-sm text-blue-700">Due to browser security (CORS), direct URL screenshots require a proxy service. The HTML method works directly in your browser.</p>
+        </div>
+        <div class="bg-green-50 rounded-xl p-4">
+          <h4 class="font-medium text-green-900 mb-2">📝 HTML to Image</h4>
+          <p class="text-sm text-green-700">Paste any HTML code and it will be rendered and converted to an image. Supports inline CSS, SVG, and basic HTML elements.</p>
+        </div>
+      </div>
+    </div>
   </div>`;
 }
-
-function initCompress() {
-  compressFiles = [];
-  setupDropZone('compressDrop', files => {
-    const imgs = [...files].filter(f => f.type.startsWith('image/'));
-    if(!imgs.length) { alert('Please select image files'); return; }
-    imgs.forEach(f => processCompress(f));
-  });
-}
-
-function processCompress(file) {
-  const id = generateId();
-  const item = { id, file, status: 'processing' };
-  compressFiles.push(item);
-
-  const results = document.getElementById('compressResults');
-  results.insertAdjacentHTML('beforeend', `
-    <div id="ccard_${id}" class="bg-white rounded-2xl border p-4">
-      <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div>
-        <div class="flex-1"><div class="font-medium text-sm text-gray-900">${file.name}</div><div class="text-xs text-gray-500">${formatSize(file.size)} • Compressing...</div></div>
-      </div>
-    </div>
-  `);
-
-  const img = new Image();
-  img.onload = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext('2d');
-    const outType = compressFormat === 'auto' ? (file.type === 'image/png' ? 'image/png' : file.type === 'image/webp' ? 'image/webp' : 'image/jpeg') : compressFormat;
-    if(outType === 'image/jpeg') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    ctx.drawImage(img, 0, 0);
-
-    canvas.toBlob(blob => {
-      item.blob = blob;
-      item.status = 'done';
-      const ext = outType.split('/')[1] === 'jpeg' ? 'jpg' : outType.split('/')[1];
-      const newName = file.name.replace(/\.[^.]+$/, '.' + ext);
-      const savings = ((1 - blob.size / file.size) * 100).toFixed(1);
-      const previewUrl = URL.createObjectURL(blob);
-      item.newName = newName;
-
-      document.getElementById(`ccard_${id}`).innerHTML = `
-        <div class="flex items-start gap-4">
-          <img src="${previewUrl}" class="w-16 h-16 rounded-xl object-cover border" alt="Compressed"/>
-          <div class="flex-1 min-w-0">
-            <div class="font-medium text-sm text-gray-900 truncate">${newName}</div>
-            <div class="text-xs text-gray-500">${img.width}×${img.height} • ${formatSize(file.size)} → ${formatSize(blob.size)}</div>
-            <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500" style="width:${Math.max(5,100-Math.abs(savings))}%"></div></div>
-            <div class="text-xs font-medium mt-1 ${savings>0?'text-green-600':'text-orange-600'}">${savings>0?'↓':'↑'} ${Math.abs(savings)}% ${savings>0?'saved':'larger'}</div>
-          </div>
-          <button onclick="downloadBlob(compressFiles.find(f=>f.id==='${id}').blob,'${newName}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition whitespace-nowrap">📥 Download</button>
-        </div>`;
-
-      updateCompressBatch();
-    }, outType, compressQuality / 100);
-  };
-  img.src = URL.createObjectURL(file);
-}
-
-function updateCompressBatch() {
-  const done = compressFiles.filter(f => f.status === 'done');
-  if(done.length >= 1) {
-    const totalOrig = compressFiles.reduce((s, f) => s + f.file.size, 0);
-    const totalNew = done.reduce((s, f) => s + f.blob.size, 0);
-    const totalSavings = ((1 - totalNew / totalOrig) * 100).toFixed(1);
-    const summary = document.getElementById('compressSummary');
-    summary.classList.remove('hidden');
-    summary.innerHTML = `
-      <div class="bg-gradient-to-r from-emerald-50 to-green-50 rounded-2xl border border-emerald-200 p-4 flex items-center justify-between flex-wrap gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center text-lg">📊</div>
-          <div><div class="text-sm font-bold text-gray-900">${done.length} image${done.length>1?'s':''} compressed</div><div class="text-xs text-gray-600">${formatSize(totalOrig)} → ${formatSize(totalNew)} • ${totalSavings>0?'Saved '+totalSavings+'%':'Increased '+Math.abs(totalSavings)+'%'}</div></div>
-        </div>
-        ${done.length>1?`<button onclick="compressFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:opacity-90 transition">📥 Download All</button>`:''}
-      </div>`;
-  }
-}
-
-// ==================== RESIZE IMAGE ====================
-let resizeFiles = [];
-let resizeMode = 'pixels';
-let resizeWidth = 800;
-let resizeHeight = 600;
-let resizePercent = 50;
-let resizeLockAspect = true;
-let resizeQuality = 92;
-let resizeFormat = 'auto';
-let resizeOrigAspect = 1;
-
-const RESIZE_PRESETS = [
-  {name:'Instagram Post',w:1080,h:1080,cat:'social'},
-  {name:'Instagram Story',w:1080,h:1920,cat:'social'},
-  {name:'Facebook Cover',w:820,h:312,cat:'social'},
-  {name:'Twitter Header',w:1500,h:500,cat:'social'},
-  {name:'YouTube Thumbnail',w:1280,h:720,cat:'social'},
-  {name:'LinkedIn Banner',w:1584,h:396,cat:'social'},
-  {name:'HD (720p)',w:1280,h:720,cat:'standard'},
-  {name:'Full HD (1080p)',w:1920,h:1080,cat:'standard'},
-  {name:'2K',w:2560,h:1440,cat:'standard'},
-  {name:'4K',w:3840,h:2160,cat:'standard'},
-  {name:'Icon 64px',w:64,h:64,cat:'standard'},
-  {name:'Icon 512px',w:512,h:512,cat:'standard'},
-];
-
-function renderResize() {
-  return `
-  <div class="fade-in max-w-4xl mx-auto px-4 py-12">
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center gap-2 bg-orange-100 text-orange-700 text-sm font-medium px-4 py-2 rounded-full mb-4">📐 Image Resizer</div>
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Resize <span class="gradient-text">Images</span></h1>
-      <p class="text-gray-600 max-w-xl mx-auto">Resize JPG, PNG, SVG or GIF by defining new height and width pixels. Change image dimensions in bulk.</p>
-    </div>
-    ${createDropZone('resizeDrop','image/jpeg,image/png,image/webp,image/gif,image/bmp,image/svg+xml')}
-    <!-- Settings -->
-    <div class="bg-white rounded-2xl border p-6 mt-6">
-      <!-- Mode Selector -->
-      <div class="flex gap-2 mb-6">
-        ${[{id:'pixels',label:'📐 By Pixels'},{id:'percent',label:'📊 By Percentage'},{id:'preset',label:'🖼️ Presets'}].map(m => `
-          <button onclick="resizeMode='${m.id}';renderResizeSettings()" id="resizeMode_${m.id}" class="flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition ${resizeMode===m.id?'border-purple-500 bg-purple-50 text-purple-700':'border-gray-200 text-gray-600 hover:bg-gray-50'}">${m.label}</button>
-        `).join('')}
-      </div>
-      <div id="resizeSettings"></div>
-      <!-- Quality & Format -->
-      <div class="grid md:grid-cols-2 gap-6 mt-6 pt-6 border-t">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Quality: <span id="resizeQualityVal" class="text-purple-600 font-bold">${resizeQuality}%</span></label>
-          <input type="range" min="1" max="100" value="${resizeQuality}" class="w-full" oninput="resizeQuality=+this.value;document.getElementById('resizeQualityVal').textContent=this.value+'%'"/>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Output Format</label>
-          <select onchange="resizeFormat=this.value" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-purple-500 outline-none bg-white text-sm">
-            <option value="auto">Auto (keep original)</option>
-            <option value="image/jpeg">JPEG</option>
-            <option value="image/png">PNG</option>
-            <option value="image/webp">WebP</option>
-          </select>
+function initHtmlToImage(){htmlUrl='';htmlWidth=1280;htmlHeight=800}
+function captureUrl(){
+  const url=document.getElementById('htmlUrlInput').value.trim();
+  if(!url){alert('Please enter a URL');return}
+  document.getElementById('htmlResult').innerHTML=`
+    <div class="bg-white rounded-2xl border p-6">
+      <div class="text-center">
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
+          <p class="text-sm text-amber-800">⚠️ Direct URL capture requires a server-side service due to browser CORS restrictions.</p>
+          <p class="text-sm text-amber-700 mt-2">💡 <strong>Alternative:</strong> Open the website, right-click → "View Page Source", copy the HTML, and paste it in the HTML Code box above.</p>
         </div>
       </div>
-    </div>
-    <div id="resizeResults" class="mt-6 space-y-4"></div>
-    <div id="resizeBatchBar" class="hidden mt-4"></div>
-  </div>`;
-}
-
-function renderResizeSettings() {
-  const s = document.getElementById('resizeSettings');
-  // Update mode buttons
-  ['pixels','percent','preset'].forEach(m => {
-    const btn = document.getElementById('resizeMode_'+m);
-    if(btn) btn.className = `flex-1 py-2.5 rounded-xl text-sm font-medium border-2 transition ${resizeMode===m?'border-purple-500 bg-purple-50 text-purple-700':'border-gray-200 text-gray-600 hover:bg-gray-50'}`;
-  });
-
-  if(resizeMode === 'pixels') {
-    s.innerHTML = `
-      <div class="flex items-end gap-4">
-        <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Width (px)</label>
-          <input type="number" id="resizeW" value="${resizeWidth}" min="1" max="10000" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm" oninput="resizeWidth=+this.value;if(resizeLockAspect&&resizeOrigAspect){resizeHeight=Math.round(resizeWidth/resizeOrigAspect);document.getElementById('resizeH').value=resizeHeight}"/>
-        </div>
-        <button onclick="resizeLockAspect=!resizeLockAspect;renderResizeSettings()" class="w-12 h-12 rounded-xl border-2 flex items-center justify-center text-lg transition ${resizeLockAspect?'border-purple-500 bg-purple-50 text-purple-600':'border-gray-200 text-gray-400'}" title="${resizeLockAspect?'Aspect ratio locked':'Aspect ratio unlocked'}">${resizeLockAspect?'🔗':'🔓'}</button>
-        <div class="flex-1">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Height (px)</label>
-          <input type="number" id="resizeH" value="${resizeHeight}" min="1" max="10000" class="w-full px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-purple-500 outline-none text-sm" oninput="resizeHeight=+this.value;if(resizeLockAspect&&resizeOrigAspect){resizeWidth=Math.round(resizeHeight*resizeOrigAspect);document.getElementById('resizeW').value=resizeWidth}"/>
-        </div>
-      </div>`;
-  } else if(resizeMode === 'percent') {
-    s.innerHTML = `
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Scale: <span id="resizePercentVal" class="text-purple-600 font-bold">${resizePercent}%</span></label>
-        <input type="range" min="1" max="400" value="${resizePercent}" class="w-full" oninput="resizePercent=+this.value;document.getElementById('resizePercentVal').textContent=this.value+'%'"/>
-        <div class="flex gap-2 mt-3">
-          ${[25,50,75,100,150,200].map(p => `<button onclick="resizePercent=${p};document.querySelector('#resizeSettings input[type=range]').value=${p};document.getElementById('resizePercentVal').textContent='${p}%'" class="px-3 py-1.5 rounded-lg text-xs font-medium border hover:bg-purple-50 hover:border-purple-300 transition">${p}%</button>`).join('')}
-        </div>
-      </div>`;
-  } else {
-    s.innerHTML = `
-      <div>
-        <p class="text-sm text-gray-600 mb-3">Choose a preset dimension:</p>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-          ${RESIZE_PRESETS.map(p => `
-            <button onclick="resizeWidth=${p.w};resizeHeight=${p.h};resizeMode='pixels';renderResizeSettings()" class="p-3 rounded-xl border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition text-left">
-              <div class="text-sm font-medium text-gray-900">${p.name}</div>
-              <div class="text-xs text-gray-500">${p.w} × ${p.h}</div>
-            </button>
-          `).join('')}
-        </div>
-      </div>`;
-  }
-}
-
-function initResize() {
-  resizeFiles = [];
-  renderResizeSettings();
-  setupDropZone('resizeDrop', files => {
-    const imgs = [...files].filter(f => f.type.startsWith('image/'));
-    if(!imgs.length) { alert('Please select image files'); return; }
-    imgs.forEach(f => processResize(f));
-  });
-}
-
-function processResize(file) {
-  const id = generateId();
-  const item = { id, file, status: 'processing' };
-  resizeFiles.push(item);
-
-  const results = document.getElementById('resizeResults');
-  results.insertAdjacentHTML('beforeend', `
-    <div id="rcard_${id}" class="bg-white rounded-2xl border p-4">
-      <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center"><div class="spinner w-6 h-6"></div></div>
-        <div class="flex-1"><div class="font-medium text-sm text-gray-900">${file.name}</div><div class="text-xs text-gray-500">${formatSize(file.size)} • Resizing...</div></div>
-      </div>
-    </div>
-  `);
-
-  const img = new Image();
-  img.onload = () => {
-    // Set original aspect for lock feature
-    if(resizeFiles.length === 1) {
-      resizeOrigAspect = img.width / img.height;
-    }
-
-    let targetW, targetH;
-    if(resizeMode === 'percent') {
-      targetW = Math.round(img.width * resizePercent / 100);
-      targetH = Math.round(img.height * resizePercent / 100);
-    } else {
-      targetW = resizeWidth;
-      targetH = resizeHeight;
-    }
-
-    const canvas = document.createElement('canvas');
-    canvas.width = targetW;
-    canvas.height = targetH;
-    const ctx = canvas.getContext('2d');
-
-    const outType = resizeFormat === 'auto' ? (file.type === 'image/png' ? 'image/png' : file.type === 'image/webp' ? 'image/webp' : 'image/jpeg') : resizeFormat;
-    if(outType === 'image/jpeg') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-    ctx.drawImage(img, 0, 0, targetW, targetH);
-
-    canvas.toBlob(blob => {
-      item.blob = blob;
-      item.status = 'done';
-      const ext = outType.split('/')[1] === 'jpeg' ? 'jpg' : outType.split('/')[1];
-      const newName = file.name.replace(/\.[^.]+$/, '_resized.' + ext);
-      item.newName = newName;
-      const previewUrl = URL.createObjectURL(blob);
-      const sizeChange = ((1 - blob.size / file.size) * 100).toFixed(1);
-
-      document.getElementById(`rcard_${id}`).innerHTML = `
-        <div class="flex items-start gap-4">
-          <img src="${previewUrl}" class="w-16 h-16 rounded-xl object-cover border" alt="Resized"/>
-          <div class="flex-1 min-w-0">
-            <div class="font-medium text-sm text-gray-900 truncate">${newName}</div>
-            <div class="text-xs text-gray-500">${img.width}×${img.height} → ${targetW}×${targetH}</div>
-            <div class="text-xs text-gray-500 mt-0.5">${formatSize(file.size)} → ${formatSize(blob.size)}</div>
-            <div class="inline-flex items-center gap-1 mt-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${sizeChange>0?'bg-green-100 text-green-700':'bg-orange-100 text-orange-700'}">${sizeChange>0?'↓':'↑'} ${Math.abs(sizeChange)}%</div>
-          </div>
-          <button onclick="downloadBlob(resizeFiles.find(f=>f.id==='${id}').blob,'${newName}')" class="gradient-bg text-white text-sm font-medium px-4 py-2 rounded-xl hover:opacity-90 transition whitespace-nowrap">📥 Download</button>
-        </div>`;
-
-      updateResizeBatch();
-    }, outType, resizeQuality / 100);
-  };
-  img.src = URL.createObjectURL(file);
-}
-
-function updateResizeBatch() {
-  const done = resizeFiles.filter(f => f.status === 'done');
-  if(done.length < 2) return;
-  const bar = document.getElementById('resizeBatchBar');
-  bar.classList.remove('hidden');
-  bar.innerHTML = `
-    <div class="bg-white rounded-2xl border p-4 flex items-center justify-between flex-wrap gap-3">
-      <div class="text-sm text-gray-600"><span class="font-bold text-gray-900">${done.length} files</span> resized</div>
-      <button onclick="resizeFiles.filter(f=>f.status==='done').forEach((f,i)=>setTimeout(()=>downloadBlob(f.blob,f.newName),i*200))" class="gradient-bg text-white text-sm font-medium px-5 py-2.5 rounded-xl hover:opacity-90 transition">📥 Download All</button>
     </div>`;
+}
+function captureHtml(){
+  const html=document.getElementById('htmlCodeInput').value.trim();
+  if(!html){alert('Please enter HTML code');return}
+  const w=+document.getElementById('htmlW').value||1280,h=+document.getElementById('htmlH').value||800;
+  document.getElementById('htmlResult').innerHTML=`<div class="bg-white rounded-2xl border p-4"><div class="flex items-center gap-4"><div class="spinner"></div><span class="text-sm text-gray-600">Rendering HTML...</span></div></div>`;
+  const svgData=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
+    <foreignObject width="100%" height="100%">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="width:${w}px;height:${h}px;overflow:hidden;font-family:Inter,system-ui,sans-serif">
+        ${html}
+      </div>
+    </foreignObject>
+  </svg>`;
+  const blob=new Blob([svgData],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);
+    ctx.drawImage(img,0,0);
+    c.toBlob(jpgBlob=>{
+      const pu=URL.createObjectURL(jpgBlob);
+      document.getElementById('htmlResult').innerHTML=`
+        <div class="bg-white rounded-2xl border p-6 fade-in">
+          <h3 class="font-semibold text-gray-900 mb-4">✅ Result</h3>
+          <div class="border rounded-xl overflow-hidden mb-4"><img src="${pu}" class="w-full" alt="HTML rendered"/></div>
+          <div class="text-sm text-gray-500 mb-4">${w} × ${h} pixels</div>
+          <div class="flex gap-3">
+            <button onclick="downloadBlob(document._htmlJpgBlob,'html_capture.jpg')" class="flex-1 gradient-bg text-white font-medium py-3 rounded-xl hover:opacity-90 transition">📥 Download JPG</button>
+            <button onclick="downloadBlob(document._htmlSvgBlob,'html_capture.svg')" class="flex-1 bg-white border-2 border-purple-200 text-purple-700 font-medium py-3 rounded-xl hover:bg-purple-50 transition">📥 Download SVG</button>
+          </div>
+        </div>`;
+      document._htmlJpgBlob=jpgBlob;
+      document._htmlSvgBlob=blob;
+    },'image/jpeg',0.92);
+  };
+  img.onerror=()=>{
+    document.getElementById('htmlResult').innerHTML=`
+      <div class="bg-white rounded-2xl border p-6 fade-in">
+        <h3 class="font-semibold text-gray-900 mb-4">✅ SVG Generated</h3>
+        <p class="text-sm text-gray-600 mb-4">HTML converted to SVG. JPG conversion may be limited due to external resource restrictions.</p>
+        <button onclick="downloadBlob(document._htmlSvgBlob,'html_capture.svg')" class="w-full gradient-bg text-white font-medium py-3 rounded-xl hover:opacity-90 transition">📥 Download SVG</button>
+      </div>`;
+    document._htmlSvgBlob=blob;
+  };
+  img.src=url;
 }
 
 // ==================== INIT ====================
+function resolveRoute() {
+  const path = window.location.pathname;
+  if (ROUTES[path]) {
+    return path;
+  }
+  // Try to match with trailing slash
+  const clean = path.replace(/\/+$/, '') || '/';
+  if (ROUTES[clean]) return clean;
+  return '/';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  const path = resolveRoute();
+  history.replaceState({ path: path }, '', path);
+  const cfg = ROUTES[path];
+  currentPage = cfg.id;
+  document.title = cfg.title;
+
+  // Update meta
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc && META_DESC[path]) metaDesc.setAttribute('content', META_DESC[path]);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute('href', 'https://imagetools.app' + path);
+
   renderNav();
   renderPage();
 });
@@ -984,27 +1365,12 @@ document.addEventListener('DOMContentLoaded', () => {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "ImageTools Pro",
-  "description": "Free online image editing suite with 3 powerful tools: PNG to JPG converter, image compressor, and image resizer.",
+  "description": "Free online image editing suite with 10 powerful tools.",
   "url": "https://imagetools.app",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
-  "browserRequirements": "Requires a modern web browser",
   "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
-  "featureList": ["PNG to JPG Conversion", "Image Compression", "Image Resizing", "Batch Processing", "No Sign-Up Required"]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type":"Question","name":"Is ImageTools Pro really free?","acceptedAnswer":{"@type":"Answer","text":"Yes! All tools are 100% free with no hidden fees, no premium plans, and no usage limits."}},
-    {"@type":"Question","name":"Are my images safe and private?","acceptedAnswer":{"@type":"Answer","text":"All image processing happens directly in your browser. Your images are never uploaded to any server."}},
-    {"@type":"Question","name":"What image formats are supported?","acceptedAnswer":{"@type":"Answer","text":"We support JPG, PNG, WebP, GIF, BMP, SVG, and TIFF formats."}},
-    {"@type":"Question","name":"Can I process multiple images at once?","acceptedAnswer":{"@type":"Answer","text":"Yes! All tools support batch processing with bulk download."}},
-    {"@type":"Question","name":"Do I need to create an account?","acceptedAnswer":{"@type":"Answer","text":"No! No sign-up, no login, no account needed. Just open the website and start editing."}},
-    {"@type":"Question","name":"Does it work on mobile?","acceptedAnswer":{"@type":"Answer","text":"Yes! Fully responsive and works on all modern browsers on desktop and mobile."}}
-  ]
+  "featureList": ["Convert to JPG","Convert from JPG","PNG to JPG","Compress Images","Resize Images","Crop Images","Rotate Images","Photo Editor","Upscale Images","HTML to Image"]
 }
 </script>
 </body>
